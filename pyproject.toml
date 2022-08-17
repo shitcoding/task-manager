@@ -9,12 +9,17 @@ python = "^3.8"
 Django = "^4.1"
 python-dotenv = "^0.20.0"
 gunicorn = "^20.1.0"
-psycopg2 = "^2.9.3"
-psycopg2-binary = "^2.9.3"
+psycopg2 = { version = "^2.9.3", optional = true }
+psycopg2-binary = { version = "^2.9.3", optional = true }
+dj-database-url = "^1.0.0"
 
 [tool.poetry.dev-dependencies]
 wemake-python-styleguide = "^0.16.1"
 coverage = "^6.4.3"
+
+[tool.poetry.extras]
+psycopg2 = ["psycopg2"]
+psycopg2-binary = ["psycopg2-binary"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
