@@ -6,7 +6,6 @@ import dj_database_url
 
 from task_manager.utils import misc
 
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Logging setup
@@ -150,7 +149,6 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
-
 
 
 # Project specific settings
