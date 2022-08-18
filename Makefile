@@ -23,7 +23,18 @@ shell:
 lint:
 	@poetry run flake8 task_manager
 
+selfcheck:
+	@poetry check
+
+test:
+	@poetry run coverage run --source='.' manage.py test
+
+test-coverage:
+	@poetry run pytest --cov=task_manager --cov-report=xml
+
+check: lint selfcheck test requirements.txt
+
 deploy:
 	git push heroku
 
-.PHONY: install secretkey migrate setup shell lint deploy
+.PHONY: install secretkey migrate setup shell lint selfcheck test check deploy
