@@ -12,6 +12,7 @@ gunicorn = "^20.1.0"
 psycopg2 = { version = "^2.9.3", optional = true }
 psycopg2-binary = { version = "^2.9.3", optional = true }
 dj-database-url = "^1.0.0"
+django-bootstrap4 = "^22.2"
 
 [tool.poetry.dev-dependencies]
 wemake-python-styleguide = "^0.16.1"
