@@ -37,4 +37,4 @@ check: lint selfcheck test requirements.txt
 deploy:
 	git push heroku
 
-.PHONY: install secretkey migrate setup shell lint selfcheck test check deploy
+.PHONY: install secretkey requirements.txt migrate setup shell lint selfcheck test check deploy
