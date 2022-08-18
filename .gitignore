@@ -12,3 +12,5 @@ htmlcov/
 *.bak
 *.mo
 .coverage
+coverage.xml
+*.log
