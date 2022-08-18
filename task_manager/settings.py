@@ -1,3 +1,4 @@
+import logging
 import os
 from pathlib import Path
 
@@ -7,6 +8,16 @@ from task_manager.utils import misc
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Logging setup
+logging.basicConfig(
+    level=logging.DEBUG,
+    filename=BASE_DIR / 'logs.events.log',
+    filemode='w',
+    format='{asctime} - {levelname} - {message}',
+    datefmt='%H:%M:%S',
+    style='{',
+)
 
 
 SECRET_KEY = misc.getenv('SECRET_KEY')
