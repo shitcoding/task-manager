@@ -1,0 +1,35 @@
+{% extends 'task_manager/base.html' %}
+{% load bootstrap4 %}
+
+{% block title %}Django Task Manager{% endblock %}
+
+{% block content %}
+<h1 class="my-4">Пользователи</h1>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Имя пользователя</th>
+      <th>Полное имя</th>
+      <th>Дата создания</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <tr>
+      <td>1</td>
+      <td>ivan-petrov</td>
+      <td>Ivan Petrov</td>
+      <td>28.03.2022 17:11</td>
+      <td>
+        <a href="/users/1/update/">Изменить</a>
+        <br>
+        <a href="/users/1/delete/">Удалить</a>
+      </td>
+    </tr>
+
+  </tbody>
+</table>
+{% endblock %}
