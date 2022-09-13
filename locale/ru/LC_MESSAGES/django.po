@@ -1,0 +1,65 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-09-13 14:06+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
+"(n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: templates/task_manager/base.html:11 templates/task_manager/index.html:6
+msgid "Task Manager"
+msgstr "Meнеджер Задач"
+
+#: templates/task_manager/base.html:19
+msgid "Users"
+msgstr "Пользователи"
+
+#: templates/task_manager/base.html:22
+msgid "Statuses"
+msgstr "Статусы"
+
+#: templates/task_manager/base.html:25
+msgid "Labels"
+msgstr "Метки"
+
+#: templates/task_manager/base.html:28
+msgid "Tasks"
+msgstr "Задачи"
+
+#: templates/task_manager/base.html:35
+msgid "Log in"
+msgstr "Вход"
+
+#: templates/task_manager/base.html:38
+msgid "Sign up"
+msgstr "Регистрация"
+
+#: templates/task_manager/index.html:11
+msgid "Task manager demo"
+msgstr "Meнеджер Задач: Демо версия"
+
+#: templates/task_manager/index.html:12
+msgid ""
+"This is a live demo of task manager with Django backend and Bootstrap front-"
+"end."
+msgstr ""
+"Функциональная демо версия менеджера задач с бекендом на Django и фронтендом "
+"на Bootstrap."
+
+#: templates/task_manager/index.html:13
+msgid "View source code &raquo;"
+msgstr "Исходный код &raquo;"
