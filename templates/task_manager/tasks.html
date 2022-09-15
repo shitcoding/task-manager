@@ -1,0 +1,49 @@
+{% extends 'task_manager/base.html' %}
+
+{% load i18n %}
+{% load bootstrap4 %}
+
+{% block title %}{% translate "Tasks" %}{% endblock %}
+
+{% block content %}
+<h1 class="my-4">{% translate "Tasks" %}</h1>
+
+<a class="nav-link" href="{% url 'task_create' %}">{% translate "Create task" %}</a>
+
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>{% translate "Name" %}</th>
+      <th>{% translate "Status" %}</th>
+      <th>{% translate "Creator" %}</th>
+      <th>{% translate "Performer" %}</th>
+      <th>{% translate "Created on" %}</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+
+    {% for task in tasks_list %}
+    <tr>
+      <td>{{ task.id }}</td>
+      <td>
+        <a href="/tasks/1/">{{ task.name }}</a>
+      </td>
+      <td>{{ task.status }}</td>
+      <td>{{ task.creator.first_name }} {{ task.creator.last_name }}</td>
+      <td>{{ task.performer.first_name }} {{ task.performer.last_name }}</td>
+      <td>{{ task.created_on }}</td>
+      <td>
+        <a href="{% url 'task_update' task.id %}">{% translate "Edit" %}</a>
+        <br>
+        <a href="{% url 'task_delete' task.id %}">{% translate "Delete" %}</a>
+      </td>
+    </tr>
+    {% endfor %}
+
+  </tbody>
+</table>
+
+{% endblock %}
