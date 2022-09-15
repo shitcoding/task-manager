@@ -1,34 +1,39 @@
 {% extends 'task_manager/base.html' %}
+
+{% load i18n %}
 {% load bootstrap4 %}
 
-{% block title %}Django Task Manager{% endblock %}
+{% block title %}{% translate "Users" %}{% endblock %}
 
 {% block content %}
-<h1 class="my-4">Пользователи</h1>
+<h1 class="my-4">{% translate "Users" %}</h1>
+
 
 <table class="table table-striped">
   <thead>
     <tr>
-      <th>ID</th>
-      <th>Имя пользователя</th>
-      <th>Полное имя</th>
-      <th>Дата создания</th>
+      <th>{% translate "ID" %}</th>
+      <th>{% translate "Username" %}</th>
+      <th>{% translate "Full name" %}</th>
+      <th>{% translate "Signup date" %}</th>
       <th></th>
     </tr>
   </thead>
   <tbody>
 
+    {% for user in users_list %}
     <tr>
-      <td>1</td>
-      <td>ivan-petrov</td>
-      <td>Ivan Petrov</td>
-      <td>28.03.2022 17:11</td>
+      <td>{{ user.id }}</td>
+      <td>{{ user.username }}</td>
+      <td>{{ user.first_name }} {{ user.last_name }}</td>
+      <td>{{ user.signup_date }}</td>
       <td>
-        <a href="/users/1/update/">Изменить</a>
+        <a href="{% url 'user_update' user.id %}">{% translate "Edit" %}</a>
         <br>
-        <a href="/users/1/delete/">Удалить</a>
+        <a href="{% url 'user_delete' user.id %}">{% translate "Delete" %}</a>
       </td>
     </tr>
+    {% endfor %}
 
   </tbody>
 </table>
