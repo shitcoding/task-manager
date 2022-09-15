@@ -1,5 +1,7 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
+
+from django.views import generic
 
 from .models import User, Task, Label, Status
 
@@ -21,8 +23,13 @@ def logout(request):
     return HttpResponse("You're at logout page")
 
 
-def users(request):
-    return render(request, "task_manager/users.html")
+class UserListView(generic.ListView):
+    template_name = "task_manager/users.html"
+    context_object_name = "users_list"
+
+    def get_queryset(self):
+        """Return the list of all registered users."""
+        return User.objects.order_by("-signup_date")
 
 
 def user_update(request, user_id):
