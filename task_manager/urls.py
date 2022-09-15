@@ -11,7 +11,7 @@ urlpatterns = [
     path("logout/", views.logout, name="logout"),
     # Users
     path("users/create/", views.signup, name="signup"),
-    path("users/", views.users, name="users"),
+    path("users/", views.UserListView.as_view(), name="users"),
     path("users/<int:user_id>/update/", views.user_update, name="user_update"),
     path("users/<int:user_id>/delete/", views.user_delete, name="user_delete"),
     # Tasks
