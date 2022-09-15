@@ -5,7 +5,7 @@ from .models import User, Task, Label, Status
 
 
 def index(request):
-    return render(request, 'task_manager/index.html')
+    return render(request, "task_manager/index.html")
 
 
 # Users
@@ -22,7 +22,7 @@ def logout(request):
 
 
 def users(request):
-    return render(request, 'task_manager/users.html')
+    return render(request, "task_manager/users.html")
 
 
 def user_update(request, user_id):
@@ -86,4 +86,3 @@ def label_update(request, label_id):
 
 def label_delete(request, label_id):
     return HttpResponse(f"You're at label {label_id} delete page")
-
