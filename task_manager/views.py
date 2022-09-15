@@ -41,8 +41,13 @@ def user_delete(request, user_id):
 
 
 # Tasks
-def tasks(request):
-    return HttpResponse("You're at the tasks list page")
+class TaskListView(generic.ListView):
+    template_name = "task_manager/tasks.html"
+    context_object_name = "tasks_list"
+
+    def get_queryset(self):
+        """Return the list of all tasks."""
+        return Task.objects.order_by("-created_on")
 
 
 def task_create(request):
