@@ -1,0 +1,40 @@
+{% extends 'task_manager/base.html' %}
+
+{% load i18n %}
+{% load bootstrap4 %}
+
+{% block title %}{% translate "Labels" %}{% endblock %}
+
+{% block content %}
+<h1 class="my-4">{% translate "Labels" %}</h1>
+
+
+<a class="nav-link" href="{% url 'label_create' %}">{% translate "Create label" %}</a>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>{% translate "Name" %}</th>
+      <th>{% translate "Created on" %}</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+
+    {% for label in label_list %}
+    <tr>
+      <td>{{ label.id }}</td>
+      <td>{{ label.name }}</td>
+      <td>{{ label.created_on }}</td>
+      <td>
+        <a href="{% url 'label_update' label.id %}">{% translate "Edit" %}</a>
+        <br>
+        <a href="{% url 'label_delete' label.id %}">{% translate "Delete" %}</a>
+      </td>
+    </tr>
+    {% endfor %}
+
+  </tbody>
+</table>
+
+{% endblock %}
