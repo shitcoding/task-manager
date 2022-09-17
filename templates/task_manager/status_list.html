@@ -1,0 +1,40 @@
+{% extends 'task_manager/base.html' %}
+
+{% load i18n %}
+{% load bootstrap4 %}
+
+{% block title %}{% translate "Statuses" %}{% endblock %}
+
+{% block content %}
+<h1 class="my-4">{% translate "Statuses" %}</h1>
+
+
+<a class="nav-link" href="{% url 'status_create' %}">{% translate "Create status" %}</a>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>{% translate "Name" %}</th>
+      <th>{% translate "Created on" %}</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    {% for status in status_list %}
+    <tr>
+      <td>{{ status.id }}</td>
+      <td>{{ status.name }}</td>
+      <td>{{ status.created_on }}</td>
+      <td>
+        <a href="{% url 'status_update' status.id %}">{% translate "Edit" %}</a>
+        <br>
+        <a href="{% url 'status_delete' status.id %}">{% translate "Delete" %}</a>
+      </td>
+    </tr>
+    {% endfor %}
+    
+  </tbody>
+</table>
+
+{% endblock %}
