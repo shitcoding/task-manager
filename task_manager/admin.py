@@ -1,9 +1,19 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 
-from .models import User, Task, Status, Label
+from .forms import UserChangeForm, UserCreationForm
+from .models import SiteUser, Task, Status, Label
 
 
-admin.site.register(User)
+class SiteUserAdmin(UserAdmin):
+    """Site user representation."""
+
+    model = SiteUser
+    add_form = UserCreationForm
+    form = UserChangeForm
+
+
+admin.site.register(SiteUser, SiteUserAdmin)
 admin.site.register(Task)
 admin.site.register(Status)
 admin.site.register(Label)
