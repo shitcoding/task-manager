@@ -1,10 +1,13 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
+from django.contrib.auth import views as auth_views
+from django.contrib import messages
+from django.urls import reverse_lazy
 
 from django.views import generic, View
 
-from .models import User, Task, Label, Status
+from .forms import UserCreationForm
+from .models import SiteUser, Task, Label, Status
 
 
 class IndexView(generic.TemplateView):
@@ -12,27 +15,31 @@ class IndexView(generic.TemplateView):
 
     template_name = "task_manager/index.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        messages.info(self.request, "hello http://example.com")
+        return context
+
 
 # Users
-class LoginView(View):
+class LoginView(auth_views.LoginView):
     """Login page view."""
 
-    def get(self, request):
-        return HttpResponse("You're at login page")
+    next_page = reverse_lazy("index")
 
 
-class SignupView(View):
+class SignupView(generic.CreateView):
     """Signup page view."""
 
-    def get(self, request):
-        return HttpResponse("You're at signup page")
+    form_class = UserCreationForm
+    template_name = "registration/signup.html"
+    success_url = reverse_lazy("index")
 
 
-class LogoutView(View):
+class LogoutView(auth_views.LogoutView):
     """Logout page view."""
 
-    def get(self, request):
-        return HttpResponse("You're at logout page")
+    next_page = reverse_lazy("index")
 
 
 class UserListView(generic.ListView):
@@ -41,7 +48,7 @@ class UserListView(generic.ListView):
 
     def get_queryset(self):
         """Return the list of all registered users."""
-        return User.objects.order_by("-signup_date")
+        return SiteUser.objects.order_by("-signup_date")
 
 
 class UserUpdateView(LoginRequiredMixin, View):
