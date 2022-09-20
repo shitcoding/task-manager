@@ -19,7 +19,6 @@ class IndexView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        messages.info(self.request, "hello http://example.com")
         return context
 
 
@@ -43,7 +42,10 @@ class SignupView(SuccessMessageMixin, generic.CreateView):
 class LogoutView(auth_views.LogoutView):
     """Logout page view."""
 
-    next_page = reverse_lazy("index")
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            messages.success(request, "You are logged out")
+        return super().dispatch(request, *args, **kwargs)
 
 
 class UserListView(generic.ListView):
