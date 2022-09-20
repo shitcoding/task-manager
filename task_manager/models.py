@@ -1,13 +1,21 @@
 from django.db import models
 
+from django.contrib.auth.models import AbstractUser
+from django.urls import reverse
+from django.utils.translation import gettext_lazy as _
 
-class User(models.Model):
-    """Task manager user class."""
 
-    username = models.CharField(max_length=50)
+class SiteUser(AbstractUser):
+    """Model representing Task manager user account."""
+
+    username = models.CharField(max_length=50, unique=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     signup_date = models.DateTimeField("user signup date", auto_now_add=True)
+
+    class Meta(object):
+        verbose_name = _("User")
+        verbose_name_plural = _("Users")
 
     def __str__(self):
         """Represent an instance as a string."""
@@ -44,10 +52,10 @@ class Task(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
     creator = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="creator"
+        SiteUser, on_delete=models.CASCADE, related_name="creator"
     )
     performer = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="performer"
+        SiteUser, on_delete=models.CASCADE, related_name="performer"
     )
     created_on = models.DateTimeField("task creation date", auto_now_add=True)
     status = models.ForeignKey(Status, on_delete=models.CASCADE)
