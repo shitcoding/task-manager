@@ -3,7 +3,7 @@
 {% load i18n %}
 {% load bootstrap4 %}
 
-{% block title %}{% translate "Task Manager" %}{% endblock %}
+{% block title %}{% translate "Log in" %}{% endblock %}
 
 {% block content %}
 <main role="main" class="container">
@@ -13,7 +13,7 @@
     <form method="post">
       {% csrf_token %}
       {{ form.as_p }}
-      <input type="submit" value="{% translate " Login" %}">
+      <input type="submit" value="{% translate "Login" %}">
     </form>
 
 
