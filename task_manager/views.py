@@ -2,7 +2,9 @@ from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import views as auth_views
 from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
+from django.utils.translation import gettext as _
 
 from django.views import generic, View
 
@@ -22,18 +24,20 @@ class IndexView(generic.TemplateView):
 
 
 # Users
-class LoginView(auth_views.LoginView):
+class LoginView(SuccessMessageMixin, auth_views.LoginView):
     """Login page view."""
 
     next_page = reverse_lazy("index")
+    success_message = _("You are logged in")
 
 
-class SignupView(generic.CreateView):
+class SignupView(SuccessMessageMixin, generic.CreateView):
     """Signup page view."""
 
     form_class = UserCreationForm
     template_name = "registration/signup.html"
-    success_url = reverse_lazy("index")
+    success_url = reverse_lazy("login")
+    success_message = _("User created successfully")
 
 
 class LogoutView(auth_views.LogoutView):
