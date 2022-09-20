@@ -10,21 +10,23 @@ class User(models.Model):
     signup_date = models.DateTimeField("user signup date", auto_now_add=True)
 
     def __str__(self):
+        """Represent an instance as a string."""
         return self.username
 
 
 class Label(models.Model):
-    """Label class."""
+    """Model representing a task label."""
 
     name = models.CharField(max_length=50)
     created_on = models.DateTimeField("label creation date", auto_now_add=True)
 
     def __str__(self):
+        """Represent an instance as a string."""
         return self.name
 
 
 class Status(models.Model):
-    """Task status class."""
+    """Model representing a task status."""
 
     name = models.CharField(max_length=50)
     created_on = models.DateTimeField(
@@ -32,11 +34,12 @@ class Status(models.Model):
     )
 
     def __str__(self):
+        """Represent an instance as a string."""
         return self.name
 
 
 class Task(models.Model):
-    """Task class."""
+    """Model representing a task."""
 
     name = models.CharField(max_length=200)
     description = models.TextField()
@@ -51,4 +54,5 @@ class Task(models.Model):
     labels = models.ManyToManyField(Label)
 
     def __str__(self):
+        """Represent an instance as a string."""
         return self.name
