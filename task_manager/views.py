@@ -8,7 +8,7 @@ from django.utils.translation import gettext as _
 
 from django.views import generic, View
 
-from .forms import UserCreationForm
+from .forms import UserChangeForm, UserCreationForm
 from .models import SiteUser, Task, Label, Status
 
 
@@ -57,14 +57,24 @@ class UserListView(generic.ListView):
         return SiteUser.objects.order_by("-signup_date")
 
 
-class UserUpdateView(LoginRequiredMixin, View):
+class UserUpdateView(
+    SuccessMessageMixin, LoginRequiredMixin, generic.UpdateView
     """User update page view."""
 
-    def get(self, request, user_id):
-        return HttpResponse(f"You're at user {user_id} update page")
+    model = SiteUser
+    template_name = "registration/user_update.html"
 
+    form_class = UserChangeForm
+    success_url = reverse_lazy("index")
+    success_message = _("User info changed successfully")
 
 class UserDeleteView(LoginRequiredMixin, View):
+    def get_context_data(self, **kwargs):
+        context = super(UserUpdateView, self).get_context_data(**kwargs)
+        context["password_change_form"] = auth_views.PasswordChangeForm(
+            user=self.request.user
+        )
+        return context
     """User delete page view."""
 
     def get(self, request, user_id):
