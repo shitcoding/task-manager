@@ -1,0 +1,23 @@
+{% extends 'task_manager/base.html' %}
+
+{% load i18n %}
+{% load bootstrap4 %}
+
+{% block title %}{% translate 'User Update' %}{% endblock %}
+
+{% block content %}
+<main role="main" class="container">
+  <div class="jumbotron">
+    <h1>{% translate 'User Update' %}</h1>
+
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      {{ password_change_form.as_p }}
+      <input type="submit" value="{% translate 'Update' %}">
+    </form>
+
+
+  </div>
+</main>
+{% endblock %}
