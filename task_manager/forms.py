@@ -7,7 +7,7 @@ class UserCreationForm(forms.UserCreationForm):
 
     class Meta(forms.UserCreationForm.Meta):
         model = SiteUser
-        fields = ["username", "first_name", "last_name"]
+        fields = ("username", "first_name", "last_name")
 
 
 class UserChangeForm(forms.UserChangeForm):
@@ -15,4 +15,4 @@ class UserChangeForm(forms.UserChangeForm):
 
     class Meta(forms.UserChangeForm.Meta):
         model = SiteUser
-        fields = ["username", "first_name", "last_name"]
+        fields = ("username", "first_name", "last_name")
