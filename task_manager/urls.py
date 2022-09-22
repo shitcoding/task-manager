@@ -14,12 +14,12 @@ urlpatterns = [
     path("users/create/", views.SignupView.as_view(), name="signup"),
     path("users/", views.UserListView.as_view(), name="users"),
     path(
-        "users/<int:user_id>/update/",
+        "users/<int:pk>/update/",
         views.UserUpdateView.as_view(),
         name="user_update",
     ),
     path(
-        "users/<int:user_id>/delete/",
+        "users/<int:pk>/delete/",
         views.UserDeleteView.as_view(),
         name="user_delete",
     ),
