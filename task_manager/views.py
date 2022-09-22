@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import views as auth_views
+from django.views.generic.edit import DeleteView
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
@@ -59,6 +60,7 @@ class UserListView(generic.ListView):
 
 class UserUpdateView(
     SuccessMessageMixin, LoginRequiredMixin, generic.UpdateView
+):
     """User update page view."""
 
     model = SiteUser
@@ -68,17 +70,22 @@ class UserUpdateView(
     success_url = reverse_lazy("index")
     success_message = _("User info changed successfully")
 
-class UserDeleteView(LoginRequiredMixin, View):
     def get_context_data(self, **kwargs):
         context = super(UserUpdateView, self).get_context_data(**kwargs)
         context["password_change_form"] = auth_views.PasswordChangeForm(
             user=self.request.user
         )
         return context
+
+
+class UserDeleteView(LoginRequiredMixin, DeleteView):
     """User delete page view."""
 
-    def get(self, request, user_id):
-        return HttpResponse(f"You're at user {user_id} delete page")
+    model = SiteUser
+    template_name = "registration/user_delete.html"
+
+    success_url = reverse_lazy("index")
+    success_message = _("User deleted successfully")
 
 
 # Tasks
