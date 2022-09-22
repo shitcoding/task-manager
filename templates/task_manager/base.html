@@ -44,6 +44,9 @@
         {% endif %}
         {% if not request.user.is_anonymous %}
         <li class="nav-item">
+          <a class="nav-link" href="{% url 'user_update' request.user.pk %}">{{ request.user.username }}</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="{% url 'logout' %}">{% translate 'Logout' %}</a>
         </li>
         {% endif %}
