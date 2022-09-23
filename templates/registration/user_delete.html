@@ -14,7 +14,7 @@
       {% csrf_token %}
       <p>{% translate 'Are you sure you want to delete the account' %} {{ object.username }}?</p>
       <input type="submit" class="btn btn-danger" value="{% translate 'Delete' %}">
-      <a class="btn btn-outline-primary" href="{% url 'index' %}">{% translate 'Return to site' %}</a>
+      <a class="btn btn-outline-primary" href="{% url 'users' %}">{% translate 'Return to site' %}</a>
     </form>
 
   </div>
