@@ -1,16 +1,16 @@
-from django.http import HttpResponse
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth import views as auth_views
-from django.views.generic.edit import DeleteView
 from django.contrib import messages
+from django.contrib.auth import views as auth_views
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.http import HttpResponse
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext as _
-
-from django.views import generic, View
+from django.views import View, generic
+from django.views.generic.edit import DeleteView
 
 from .forms import UserChangeForm, UserCreationForm
-from .models import SiteUser, Task, Label, Status
+from .models import Label, SiteUser, Status, Task
 
 
 class IndexView(generic.TemplateView):
@@ -59,33 +59,61 @@ class UserListView(generic.ListView):
 
 
 class UserUpdateView(
-    SuccessMessageMixin, LoginRequiredMixin, generic.UpdateView
+    SuccessMessageMixin,
+    LoginRequiredMixin,
+    UserPassesTestMixin,
+    generic.UpdateView,
 ):
-    """User update page view."""
+    """User profile update page view."""
 
     model = SiteUser
     template_name = "registration/user_update.html"
 
     form_class = UserChangeForm
-    success_url = reverse_lazy("index")
+    success_url = reverse_lazy("users")
     success_message = _("User info changed successfully")
 
     def get_context_data(self, **kwargs):
+        """Add password change form to page context."""
         context = super(UserUpdateView, self).get_context_data(**kwargs)
         context["password_change_form"] = auth_views.PasswordChangeForm(
             user=self.request.user
         )
         return context
 
+    def test_func(self):
+        """Check if user have permissions to update profile."""
+        obj = self.get_object()
+        return obj == self.request.user or self.request.user.is_superuser
 
-class UserDeleteView(LoginRequiredMixin, DeleteView):
-    """User delete page view."""
+    def handle_no_permission(self):
+        messages.error(
+            self.request, "You have no permissions to change other user"
+        )
+        return redirect(reverse_lazy("users"))
+
+
+class UserDeleteView(
+    SuccessMessageMixin, LoginRequiredMixin, UserPassesTestMixin, DeleteView
+):
+    """User deletion page view."""
 
     model = SiteUser
     template_name = "registration/user_delete.html"
 
-    success_url = reverse_lazy("index")
+    success_url = reverse_lazy("users")
     success_message = _("User deleted successfully")
+
+    def test_func(self):
+        """Check if user have permissions to delete profile."""
+        obj = self.get_object()
+        return obj == self.request.user or self.request.user.is_superuser
+
+    def handle_no_permission(self):
+        messages.error(
+            self.request, "You have no permissions to change other user"
+        )
+        return redirect(reverse_lazy("users"))
 
 
 # Tasks
