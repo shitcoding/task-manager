@@ -18,10 +18,6 @@ class IndexView(generic.TemplateView):
 
     template_name = "task_manager/index.html"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
-
 
 # Users
 class LoginView(SuccessMessageMixin, auth_views.LoginView):
