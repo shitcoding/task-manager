@@ -27,7 +27,7 @@ selfcheck:
 	@poetry check
 
 test:
-	@poetry run coverage run --source='.' manage.py test
+	@poetry run pytest
 
 test-coverage:
 	@poetry run pytest --cov=task_manager --cov-report=xml
