@@ -1,8 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 
-from . import views
-
+from task_manager import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -61,7 +60,9 @@ urlpatterns = [
     # Labels
     path("labels/", views.LabelListView.as_view(), name="labels"),
     path(
-        "labels/create/", views.LabelCreateView.as_view(), name="label_create"
+        "labels/create/",
+        views.LabelCreateView.as_view(),
+        name="label_create",
     ),
     path(
         "labels/<int:label_id>/update/",
