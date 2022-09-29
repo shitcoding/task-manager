@@ -1,6 +1,5 @@
-from django.db import models
-
 from django.contrib.auth.models import AbstractUser
+from django.db import models
 from django.utils.translation import gettext as _
 
 
@@ -37,7 +36,8 @@ class Status(models.Model):
 
     name = models.CharField(max_length=50)
     created_on = models.DateTimeField(
-        "status creation date", auto_now_add=True
+        "status creation date",
+        auto_now_add=True,
     )
 
     def __str__(self):
@@ -51,10 +51,14 @@ class Task(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
     creator = models.ForeignKey(
-        SiteUser, on_delete=models.CASCADE, related_name="creator"
+        SiteUser,
+        on_delete=models.CASCADE,
+        related_name="creator",
     )
     performer = models.ForeignKey(
-        SiteUser, on_delete=models.CASCADE, related_name="performer"
+        SiteUser,
+        on_delete=models.CASCADE,
+        related_name="performer",
     )
     created_on = models.DateTimeField("task creation date", auto_now_add=True)
     status = models.ForeignKey(Status, on_delete=models.CASCADE)

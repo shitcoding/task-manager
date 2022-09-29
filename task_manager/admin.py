@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .forms import UserChangeForm, UserCreationForm
-from .models import SiteUser, Task, Status, Label
+from task_manager.forms import UserChangeForm, UserCreationForm
+from task_manager.models import Label, SiteUser, Status, Task
 
 
 class SiteUserAdmin(UserAdmin):

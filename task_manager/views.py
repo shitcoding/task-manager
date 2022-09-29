@@ -9,8 +9,8 @@ from django.utils.translation import gettext as _
 from django.views import View, generic
 from django.views.generic.edit import DeleteView
 
-from .forms import UserChangeForm, UserCreationForm
-from .models import Label, SiteUser, Status, Task
+from task_manager.forms import UserChangeForm, UserCreationForm
+from task_manager.models import Label, SiteUser, Status, Task
 
 
 class IndexView(generic.TemplateView):
