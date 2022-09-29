@@ -13,6 +13,12 @@ from task_manager.forms import UserChangeForm, UserCreationForm
 from task_manager.models import Label, SiteUser, Status, Task
 
 
+class CustomLoginRequiredMixin(LoginRequiredMixin):
+    """LoginRequiredMixin with custom login page url."""
+
+    login_url = "/login/"
+
+
 class IndexView(generic.TemplateView):
     """Index page view."""
 
@@ -56,7 +62,7 @@ class UserListView(generic.ListView):
 
 class UserUpdateView(
     SuccessMessageMixin,
-    LoginRequiredMixin,
+    CustomLoginRequiredMixin,
     UserPassesTestMixin,
     generic.UpdateView,
 ):
@@ -90,7 +96,10 @@ class UserUpdateView(
 
 
 class UserDeleteView(
-    SuccessMessageMixin, LoginRequiredMixin, UserPassesTestMixin, DeleteView
+    SuccessMessageMixin,
+    CustomLoginRequiredMixin,
+    UserPassesTestMixin,
+    DeleteView,
 ):
     """User deletion page view."""
 
@@ -113,7 +122,7 @@ class UserDeleteView(
 
 
 # Tasks
-class TaskListView(LoginRequiredMixin, generic.ListView):
+class TaskListView(CustomLoginRequiredMixin, generic.ListView):
     template_name = "task_manager/task_list.html"
     context_object_name = "task_list"
 
@@ -122,14 +131,14 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
         return Task.objects.order_by("-created_on")
 
 
-class TaskCreateView(LoginRequiredMixin, View):
+class TaskCreateView(CustomLoginRequiredMixin, View):
     """Task creation page view."""
 
     def get(self, request):
         return HttpResponse("You're at the task creation page")
 
 
-class TaskDetailView(LoginRequiredMixin, generic.DetailView):
+class TaskDetailView(CustomLoginRequiredMixin, generic.DetailView):
     """Task detail page view."""
 
     model = Task
@@ -140,14 +149,14 @@ class TaskDetailView(LoginRequiredMixin, generic.DetailView):
         return context
 
 
-class TaskUpdateView(LoginRequiredMixin, View):
+class TaskUpdateView(CustomLoginRequiredMixin, View):
     """Task update page view."""
 
     def get(self, request, task_id):
         return HttpResponse(f"You're at task {task_id} update page")
 
 
-class TaskDeleteView(LoginRequiredMixin, View):
+class TaskDeleteView(CustomLoginRequiredMixin, View):
     """Task delete page view."""
 
     def get(self, request, task_id):
@@ -155,7 +164,7 @@ class TaskDeleteView(LoginRequiredMixin, View):
 
 
 # Statuses
-class StatusListView(LoginRequiredMixin, generic.ListView):
+class StatusListView(CustomLoginRequiredMixin, generic.ListView):
     template_name = "task_manager/status_list.html"
     context_object_name = "status_list"
 
@@ -164,21 +173,21 @@ class StatusListView(LoginRequiredMixin, generic.ListView):
         return Status.objects.order_by("-created_on")
 
 
-class StatusCreateView(LoginRequiredMixin, View):
+class StatusCreateView(CustomLoginRequiredMixin, View):
     """Status creation page view."""
 
     def get(self, request):
         return HttpResponse("You're at the status creation page")
 
 
-class StatusUpdateView(LoginRequiredMixin, View):
+class StatusUpdateView(CustomLoginRequiredMixin, View):
     """Status update page view."""
 
     def get(self, request, status_id):
         return HttpResponse(f"You're at status {status_id} update page")
 
 
-class StatusDeleteView(LoginRequiredMixin, View):
+class StatusDeleteView(CustomLoginRequiredMixin, View):
     """Status delete page view."""
 
     def get(self, request, status_id):
@@ -186,7 +195,7 @@ class StatusDeleteView(LoginRequiredMixin, View):
 
 
 # Labels
-class LabelListView(LoginRequiredMixin, generic.ListView):
+class LabelListView(CustomLoginRequiredMixin, generic.ListView):
     template_name = "task_manager/label_list.html"
     context_object_name = "label_list"
 
@@ -195,21 +204,21 @@ class LabelListView(LoginRequiredMixin, generic.ListView):
         return Label.objects.order_by("-created_on")
 
 
-class LabelCreateView(LoginRequiredMixin, View):
+class LabelCreateView(CustomLoginRequiredMixin, View):
     """Label creation page view."""
 
     def get(self, request):
         return HttpResponse("You're at the label creation page")
 
 
-class LabelUpdateView(LoginRequiredMixin, View):
+class LabelUpdateView(CustomLoginRequiredMixin, View):
     """Label update page view."""
 
     def get(self, request, label_id):
         return HttpResponse(f"You're at label {label_id} update page")
 
 
-class LabelDeleteView(LoginRequiredMixin, View):
+class LabelDeleteView(CustomLoginRequiredMixin, View):
     """Label delete page view."""
 
     def get(self, request, label_id):
