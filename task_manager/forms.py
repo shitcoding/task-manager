@@ -1,5 +1,6 @@
 from django.contrib.auth import forms
-from .models import SiteUser
+
+from task_manager.models import SiteUser
 
 
 class UserCreationForm(forms.UserCreationForm):
