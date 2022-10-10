@@ -9,7 +9,11 @@ from django.utils.translation import gettext as _
 from django.views import View, generic
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
-from task_manager.forms import UserChangeForm, UserCreationForm
+from task_manager.forms import (
+    TaskCreationForm,
+    UserChangeForm,
+    UserCreationForm,
+)
 from task_manager.models import Label, SiteUser, Status, Task
 
 
@@ -61,8 +65,8 @@ class UserListView(generic.ListView):
 
 
 class UserUpdateView(
-    SuccessMessageMixin,
     CustomLoginRequiredMixin,
+    SuccessMessageMixin,
     UserPassesTestMixin,
     generic.UpdateView,
 ):
@@ -99,8 +103,8 @@ class UserUpdateView(
 
 
 class UserDeleteView(
-    SuccessMessageMixin,
     CustomLoginRequiredMixin,
+    SuccessMessageMixin,
     UserPassesTestMixin,
     DeleteView,
 ):
@@ -136,11 +140,23 @@ class TaskListView(CustomLoginRequiredMixin, generic.ListView):
         return Task.objects.order_by("-created_on")
 
 
-class TaskCreateView(CustomLoginRequiredMixin, View):
+class TaskCreateView(
+    CustomLoginRequiredMixin,
+    SuccessMessageMixin,
+    generic.CreateView,
+):
     """Task creation page view."""
 
-    def get(self, request):
-        return HttpResponse("You're at the task creation page")
+    form_class = TaskCreationForm
+    template_name = "task_manager/task_create_form.html"
+    success_url = reverse_lazy("tasks")
+    success_message = _("Task created successfully")
+
+    def form_valid(self, form):
+        task = form.save(commit=False)
+        task.creator = self.request.user
+        task.save()
+        return super().form_valid(form)
 
 
 class TaskDetailView(CustomLoginRequiredMixin, generic.DetailView):
