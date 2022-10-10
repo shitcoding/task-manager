@@ -15,6 +15,7 @@ def test_password():
 def create_user(db, django_user_model, test_password):
     """
     Fixture creating a new test user.
+
     If no username is provided, uuid is used as a username.
     """
 
@@ -45,7 +46,7 @@ def auto_login_user(db, client, create_user, test_password):
 
 
 @pytest.mark.django_db
-def test_correct_user_creation(client, create_user):
+def test_correct_user_creation(create_user):
     """Test correct creation of a new user."""
     test_user = create_user(
         username="username1",
