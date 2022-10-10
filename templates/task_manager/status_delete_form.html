@@ -1,0 +1,26 @@
+{% extends 'task_manager/base.html' %}
+
+{% load i18n %}
+{% load bootstrap4 %}
+
+{% block title %}{% translate "Delete status" %}{% endblock %}
+
+{% block content %}
+<main role="main" class="container">
+
+  <div class="jumbotron">
+
+    <h1 class="my-4">{% translate "Delete status" %}</h1>
+
+    <form method="post">
+      {% csrf_token %}
+      <p>{% translate 'Are you sure you want to delete the status' %} {{ object }} ?</p>
+      <input type="submit" class="btn btn-danger" value="{% translate 'Delete' %}">
+      <a class="btn btn-outline-primary" href="{% url 'statuses' %}">{% translate 'Return to statuses list' %}</a>
+    </form>
+
+  </div>
+
+</main>
+
+{% endblock %}
