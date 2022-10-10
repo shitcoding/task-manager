@@ -203,11 +203,12 @@ class StatusUpdateView(CustomLoginRequiredMixin, UpdateView):
     success_url = reverse_lazy("statuses")
 
 
-class StatusDeleteView(CustomLoginRequiredMixin, View):
+class StatusDeleteView(CustomLoginRequiredMixin, DeleteView):
     """Status delete page view."""
 
-    def get(self, request, status_id):
-        return HttpResponse(f"You're at status {status_id} delete page")
+    template_name = "task_manager/status_delete_form.html"
+    model = Status
+    success_url = reverse_lazy("statuses")
 
 
 # Labels
