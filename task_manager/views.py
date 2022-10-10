@@ -7,7 +7,7 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext as _
 from django.views import View, generic
-from django.views.generic.edit import DeleteView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 from task_manager.forms import UserChangeForm, UserCreationForm
 from task_manager.models import Label, SiteUser, Status, Task
@@ -79,18 +79,21 @@ class UserUpdateView(
         """Add password change form to page context."""
         context = super(UserUpdateView, self).get_context_data(**kwargs)
         context["password_change_form"] = auth_views.PasswordChangeForm(
-            user=self.request.user
+            user=self.request.user,
         )
         return context
 
     def test_func(self):
         """Check if user have permissions to update profile."""
-        obj = self.get_object()
-        return obj == self.request.user or self.request.user.is_superuser
+        target_user = self.get_object()
+        return (
+            target_user == self.request.user or self.request.user.is_superuser
+        )
 
     def handle_no_permission(self):
         messages.error(
-            self.request, "You have no permissions to change other user"
+            self.request,
+            "You have no permissions to change other user",
         )
         return redirect(reverse_lazy("users"))
 
@@ -111,8 +114,10 @@ class UserDeleteView(
 
     def test_func(self):
         """Check if user have permissions to delete profile."""
-        obj = self.get_object()
-        return obj == self.request.user or self.request.user.is_superuser
+        target_user = self.get_object()
+        return (
+            target_user == self.request.user or self.request.user.is_superuser
+        )
 
     def handle_no_permission(self):
         messages.error(
@@ -173,18 +178,29 @@ class StatusListView(CustomLoginRequiredMixin, generic.ListView):
         return Status.objects.order_by("-created_on")
 
 
-class StatusCreateView(CustomLoginRequiredMixin, View):
+class StatusCreateView(CustomLoginRequiredMixin, CreateView):
     """Status creation page view."""
 
-    def get(self, request):
-        return HttpResponse("You're at the status creation page")
+    template_name = "task_manager/status_create_form.html"
+    model = Status
+    fields = ["name"]
+    success_url = reverse_lazy("statuses")
 
 
-class StatusUpdateView(CustomLoginRequiredMixin, View):
+# class StatusUpdateView(CustomLoginRequiredMixin, View):
+#     """Status update page view."""
+
+#     def get(self, request, status_id):
+#         return HttpResponse(f"You're at status {status_id} update page")
+
+
+class StatusUpdateView(CustomLoginRequiredMixin, UpdateView):
     """Status update page view."""
 
-    def get(self, request, status_id):
-        return HttpResponse(f"You're at status {status_id} update page")
+    template_name = "task_manager/status_update_form.html"
+    model = Status
+    fields = ["name"]
+    success_url = reverse_lazy("statuses")
 
 
 class StatusDeleteView(CustomLoginRequiredMixin, View):
