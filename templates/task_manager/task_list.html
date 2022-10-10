@@ -32,8 +32,19 @@
         <a href="{% url 'task_detail' task.id %}">{{ task.name }}</a>
       </td>
       <td>{{ task.status }}</td>
-      <td>{{ task.creator.first_name }} {{ task.creator.last_name }}</td>
-      <td>{{ task.performer.first_name }} {{ task.performer.last_name }}</td>
+
+      {% if task.creator.first_name or task.creator.last_name %}
+        <td>{{ task.creator.first_name }} {{ task.creator.last_name }}</td>
+      {% else %}
+        <td>{{ task.creator.username }}</td>
+      {% endif %}
+
+      {% if task.performer.first_name or task.performer.last_name %}
+        <td>{{ task.performer.first_name }} {{ task.performer.last_name }}</td>
+      {% else %}
+        <td>{{ task.performer.username }}</td>
+      {% endif %}
+
       <td>{{ task.created_on }}</td>
       <td>
         <a href="{% url 'task_update' task.id %}">{% translate "Edit" %}</a>
