@@ -62,7 +62,10 @@ class Task(models.Model):
     )
     created_on = models.DateTimeField("task creation date", auto_now_add=True)
     status = models.ForeignKey(Status, on_delete=models.CASCADE)
-    labels = models.ManyToManyField(Label)
+    label = models.ManyToManyField(
+        Label,
+        related_name="labels",
+    )
 
     def __str__(self):
         """Represent an instance as a string."""
