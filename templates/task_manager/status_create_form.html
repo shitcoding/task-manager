@@ -1,0 +1,25 @@
+{% extends 'task_manager/base.html' %}
+
+{% load i18n %}
+{% load bootstrap4 %}
+
+{% block title %}{% translate "Create status" %}{% endblock %}
+
+{% block content %}
+<main role="main" class="container">
+
+  <div class="jumbotron">
+
+    <h1 class="my-4">{% translate "Create status" %}</h1>
+
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="Save">
+    </form>
+
+  </div>
+
+</main>
+
+{% endblock %}
