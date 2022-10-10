@@ -1,10 +1,11 @@
 from django.contrib.auth import forms
+from django.forms import ModelForm
 
-from task_manager.models import SiteUser
+from task_manager.models import SiteUser, Task
 
 
 class UserCreationForm(forms.UserCreationForm):
-    """Task manager user creation form."""
+    """User creation form."""
 
     class Meta(forms.UserCreationForm.Meta):
         model = SiteUser
@@ -12,8 +13,16 @@ class UserCreationForm(forms.UserCreationForm):
 
 
 class UserChangeForm(forms.UserChangeForm):
-    """Task manager user change form."""
+    """User change form."""
 
     class Meta(forms.UserChangeForm.Meta):
         model = SiteUser
         fields = ("username", "first_name", "last_name")
+
+
+class TaskCreationForm(ModelForm):
+    """Task creation form."""
+
+    class Meta:
+        model = Task
+        fields = ("name", "description", "status", "performer", "label")
