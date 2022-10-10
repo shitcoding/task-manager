@@ -170,6 +170,8 @@ class TaskDeleteView(CustomLoginRequiredMixin, View):
 
 # Statuses
 class StatusListView(CustomLoginRequiredMixin, generic.ListView):
+    """Statuses list page view."""
+
     template_name = "task_manager/status_list.html"
     context_object_name = "status_list"
 
@@ -178,37 +180,45 @@ class StatusListView(CustomLoginRequiredMixin, generic.ListView):
         return Status.objects.order_by("-created_on")
 
 
-class StatusCreateView(CustomLoginRequiredMixin, CreateView):
+class StatusCreateView(
+    CustomLoginRequiredMixin,
+    SuccessMessageMixin,
+    CreateView,
+):
     """Status creation page view."""
 
     template_name = "task_manager/status_create_form.html"
     model = Status
     fields = ["name"]
     success_url = reverse_lazy("statuses")
+    success_message = _("Status created successfully")
 
 
-# class StatusUpdateView(CustomLoginRequiredMixin, View):
-#     """Status update page view."""
-
-#     def get(self, request, status_id):
-#         return HttpResponse(f"You're at status {status_id} update page")
-
-
-class StatusUpdateView(CustomLoginRequiredMixin, UpdateView):
+class StatusUpdateView(
+    CustomLoginRequiredMixin,
+    SuccessMessageMixin,
+    UpdateView,
+):
     """Status update page view."""
 
     template_name = "task_manager/status_update_form.html"
     model = Status
     fields = ["name"]
     success_url = reverse_lazy("statuses")
+    success_message = _("Status updated successfully")
 
 
-class StatusDeleteView(CustomLoginRequiredMixin, DeleteView):
-    """Status delete page view."""
+class StatusDeleteView(
+    CustomLoginRequiredMixin,
+    SuccessMessageMixin,
+    DeleteView,
+):
+    """Status deletion page view."""
 
     template_name = "task_manager/status_delete_form.html"
     model = Status
     success_url = reverse_lazy("statuses")
+    success_message = _("Status deleted successfully")
 
 
 # Labels
