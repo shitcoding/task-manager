@@ -7,7 +7,6 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext as _
 from django.views import View, generic
-from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 from task_manager.forms import TaskForm, UserChangeForm, UserCreationForm
 from task_manager.models import Label, SiteUser, Status, Task
@@ -102,7 +101,7 @@ class UserDeleteView(
     CustomLoginRequiredMixin,
     SuccessMessageMixin,
     UserPassesTestMixin,
-    DeleteView,
+    generic.DeleteView,
 ):
     """User deletion page view."""
 
@@ -122,7 +121,7 @@ class UserDeleteView(
     def handle_no_permission(self):
         messages.error(
             self.request,
-            "You have no permissions to change other user",
+            _("You have no permissions to change other user"),
         )
         return redirect(reverse_lazy("users"))
 
@@ -142,7 +141,7 @@ class TaskListView(CustomLoginRequiredMixin, generic.ListView):
 class TaskCreateView(
     CustomLoginRequiredMixin,
     SuccessMessageMixin,
-    CreateView,
+    generic.CreateView,
 ):
     """Task creation page view."""
 
@@ -169,7 +168,7 @@ class TaskDetailView(CustomLoginRequiredMixin, generic.DetailView):
 class TaskUpdateView(
     CustomLoginRequiredMixin,
     SuccessMessageMixin,
-    UpdateView,
+    generic.UpdateView,
 ):
     """Task update page view."""
 
@@ -180,11 +179,35 @@ class TaskUpdateView(
     success_message = _("Task updated successfully")
 
 
-class TaskDeleteView(CustomLoginRequiredMixin, View):
+class TaskDeleteView(
+    CustomLoginRequiredMixin,
+    SuccessMessageMixin,
+    UserPassesTestMixin,
+    generic.DeleteView,
+):
     """Task delete page view."""
 
-    def get(self, request, task_id):
-        return HttpResponse(f"You're at task {task_id} delete page")
+    model = Task
+    template_name = "task_manager/task_delete.html"
+
+    success_url = reverse_lazy("tasks")
+    success_message = _("Task deleted successfully")
+
+    def test_func(self):
+        """Check if user have permissions to delete the task."""
+        task_creator = self.get_object().creator
+        return (
+            task_creator == self.request.user or self.request.user.is_superuser
+        )
+
+    def handle_no_permission(self):
+        messages.error(
+            self.request,
+            _(
+                "You have no permissions to delete the task created by other user"
+            ),
+        )
+        return redirect(reverse_lazy("tasks"))
 
 
 # Statuses
@@ -202,7 +225,7 @@ class StatusListView(CustomLoginRequiredMixin, generic.ListView):
 class StatusCreateView(
     CustomLoginRequiredMixin,
     SuccessMessageMixin,
-    CreateView,
+    generic.CreateView,
 ):
     """Status creation page view."""
 
@@ -216,7 +239,7 @@ class StatusCreateView(
 class StatusUpdateView(
     CustomLoginRequiredMixin,
     SuccessMessageMixin,
-    UpdateView,
+    generic.UpdateView,
 ):
     """Status update page view."""
 
@@ -230,7 +253,7 @@ class StatusUpdateView(
 class StatusDeleteView(
     CustomLoginRequiredMixin,
     SuccessMessageMixin,
-    DeleteView,
+    generic.DeleteView,
 ):
     """Status deletion page view."""
 
