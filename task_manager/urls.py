@@ -31,12 +31,12 @@ urlpatterns = [
         name="task_detail",
     ),
     path(
-        "tasks/<int:task_id>/update/",
+        "tasks/<int:pk>/update/",
         views.TaskUpdateView.as_view(),
         name="task_update",
     ),
     path(
-        "tasks/<int:task_id>/delete/",
+        "tasks/<int:pk>/delete/",
         views.TaskDeleteView.as_view(),
         name="task_delete",
     ),
