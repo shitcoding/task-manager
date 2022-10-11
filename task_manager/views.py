@@ -2,11 +2,10 @@ from django.contrib import messages
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext as _
-from django.views import View, generic
+from django.views import generic
 
 from task_manager.forms import TaskForm, UserChangeForm, UserCreationForm
 from task_manager.models import Label, SiteUser, Status, Task
@@ -45,6 +44,7 @@ class LogoutView(auth_views.LogoutView):
     """Logout page view."""
 
     def dispatch(self, request, *args, **kwargs):
+        """Show flash message when authenticated user logs out."""
         if request.user.is_authenticated:
             messages.success(request, "You are logged out")
         return super().dispatch(request, *args, **kwargs)
@@ -147,7 +147,7 @@ class TaskCreateView(
 
     model = Task
     form_class = TaskForm
-    template_name = "task_manager/task_create_form.html"
+    template_name = "task_manager/task_create.html"
     success_url = reverse_lazy("tasks")
     success_message = _("Task created successfully")
 
@@ -174,7 +174,7 @@ class TaskUpdateView(
 
     model = Task
     form_class = TaskForm
-    template_name = "task_manager/task_update_form.html"
+    template_name = "task_manager/task_update.html"
     success_url = reverse_lazy("tasks")
     success_message = _("Task updated successfully")
 
@@ -201,11 +201,10 @@ class TaskDeleteView(
         )
 
     def handle_no_permission(self):
+        """Show error message if user tries to delete task created by other user."""
         messages.error(
             self.request,
-            _(
-                "You have no permissions to delete the task created by other user"
-            ),
+            _("You can't delete the task created by other user"),
         )
         return redirect(reverse_lazy("tasks"))
 
@@ -229,7 +228,7 @@ class StatusCreateView(
 ):
     """Status creation page view."""
 
-    template_name = "task_manager/status_create_form.html"
+    template_name = "task_manager/status_create.html"
     model = Status
     fields = ["name"]
     success_url = reverse_lazy("statuses")
@@ -243,7 +242,7 @@ class StatusUpdateView(
 ):
     """Status update page view."""
 
-    template_name = "task_manager/status_update_form.html"
+    template_name = "task_manager/status_update.html"
     model = Status
     fields = ["name"]
     success_url = reverse_lazy("statuses")
@@ -257,7 +256,7 @@ class StatusDeleteView(
 ):
     """Status deletion page view."""
 
-    template_name = "task_manager/status_delete_form.html"
+    template_name = "task_manager/status_delete.html"
     model = Status
     success_url = reverse_lazy("statuses")
     success_message = _("Status deleted successfully")
