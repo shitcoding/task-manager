@@ -302,6 +302,7 @@ class LabelUpdateView(
 
 class LabelDeleteView(
     CustomLoginRequiredMixin,
+    UserPassesTestMixin,
     SuccessMessageMixin,
     generic.DeleteView,
 ):
@@ -311,3 +312,15 @@ class LabelDeleteView(
     model = Label
     success_url = reverse_lazy("labels")
     success_message = _("Label deleted successfully")
+
+    def test_func(self):
+        """Check if target label is associated with tasks."""
+        return not self.get_object().tasks.all()
+
+    def handle_no_permission(self):
+        """Show error message if label is associated with task."""
+        messages.error(
+            self.request,
+            _("Can't delete the label associated with a task"),
+        )
+        return redirect(reverse_lazy("labels"))
