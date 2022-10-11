@@ -273,22 +273,42 @@ class LabelListView(CustomLoginRequiredMixin, generic.ListView):
         return Label.objects.order_by("-created_on")
 
 
-class LabelCreateView(CustomLoginRequiredMixin, View):
+class LabelCreateView(
+    CustomLoginRequiredMixin,
+    SuccessMessageMixin,
+    generic.CreateView,
+):
     """Label creation page view."""
 
-    def get(self, request):
-        return HttpResponse("You're at the label creation page")
+    template_name = "task_manager/label_create.html"
+    model = Label
+    fields = ["name"]
+    success_url = reverse_lazy("labels")
+    success_message = _("Label created successfully")
 
 
-class LabelUpdateView(CustomLoginRequiredMixin, View):
+class LabelUpdateView(
+    CustomLoginRequiredMixin,
+    SuccessMessageMixin,
+    generic.UpdateView,
+):
     """Label update page view."""
 
-    def get(self, request, label_id):
-        return HttpResponse(f"You're at label {label_id} update page")
+    template_name = "task_manager/label_update.html"
+    model = Label
+    fields = ["name"]
+    success_url = reverse_lazy("labels")
+    success_message = _("Label updated successfully")
 
 
-class LabelDeleteView(CustomLoginRequiredMixin, View):
-    """Label delete page view."""
+class LabelDeleteView(
+    CustomLoginRequiredMixin,
+    SuccessMessageMixin,
+    generic.DeleteView,
+):
+    """Label deletion page view."""
 
-    def get(self, request, label_id):
-        return HttpResponse(f"You're at label {label_id} delete page")
+    template_name = "task_manager/label_delete.html"
+    model = Label
+    success_url = reverse_lazy("labels")
+    success_message = _("Label deleted successfully")
