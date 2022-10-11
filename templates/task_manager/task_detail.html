@@ -5,53 +5,57 @@
 
 {% block title %}{% translate "Task details" %}{% endblock %}
 
+
 {% block content %}
-<h1 class="my-4">{% translate "Task details" %}</h1>
+<main role="main" class="container">
+  <div class="jumbotron">
+    <h1 class="my-4">{% translate "Task details" %}</h1>
 
-
-<div class="card">
-  <div class="card-header bg-secondary text-white">
-    <h2>{{ object.name }}</h2>
-  </div>
-  <div class="card-body bg-light">
-    <p>{{ object.description }}</p>
-    <hr>
-    <div class="container">
-      <div class="row p-1">
-        <div class="col">{% translate "Creator" %}</div>
-        <div class="col">{{ object.creator }}</div>
+    <div class="card">
+      <div class="card-header bg-secondary text-white">
+        <h2>{{ object.name }}</h2>
       </div>
-      <div class="row p-1">
-        <div class="col">{% translate "Performer" %}</div>
-        <div class="col">{{ object.performer }}</div>
-      </div>
-      <div class="row p-1">
-        <div class="col">{% translate "Status" %}</div>
-        <div class="col">{{ object.status }}</div>
-      </div>
-      <div class="row p-1">
-        <div class="col">{% translate "Created on" %}</div>
-        <div class="col">{{ object.created_on }}</div>
-      </div>
-      <div class="row p-1">
-        <div class="col">
-          <h6>{% translate "Labels" %}</h6>
-          <ul>
-            {% for label in object.labels.all %}
-            <li>{{ label }}</li>
-            {% endfor %}
-          </ul>
-        </div>
-      </div>
-      <div class="row p-1">
-        <div class="col">
-          <a href="{% url 'task_update' task.id %}">{% translate "Edit" %}</a>
-          <br>
-          <a href="{% url 'task_delete' task.id %}">{% translate "Delete" %}</a>
+      <div class="card-body bg-light">
+        <p>{{ object.description }}</p>
+        <hr>
+        <div class="container">
+          <div class="row p-1">
+            <div class="col">{% translate "Creator" %}</div>
+            <div class="col">{{ object.creator }}</div>
+          </div>
+          <div class="row p-1">
+            <div class="col">{% translate "Performer" %}</div>
+            <div class="col">{{ object.performer }}</div>
+          </div>
+          <div class="row p-1">
+            <div class="col">{% translate "Status" %}</div>
+            <div class="col">{{ object.status }}</div>
+          </div>
+          <div class="row p-1">
+            <div class="col">{% translate "Created on" %}</div>
+            <div class="col">{{ object.created_on }}</div>
+          </div>
+          <div class="row p-1">
+            <div class="col">
+              <h6>{% translate "Labels" %}</h6>
+              <ul>
+                {% for label in object.label.all %}
+                  <li>{{ label }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+          <div class="row p-1">
+            <div class="col">
+              <a href="{% url 'task_update' task.id %}">{% translate "Edit" %}</a>
+              <br>
+              <a href="{% url 'task_delete' task.id %}">{% translate "Delete" %}</a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
+  </div>
+</main>
 {% endblock %}
