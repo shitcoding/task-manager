@@ -57,7 +57,12 @@
   </nav>
   {% autoescape off %}{% bootstrap_messages %}{% endautoescape %}
 
-  {% block content %}{% endblock %}
+  <main role="main" class="container">
+    <div class="jumbotron">
+      {% block content %}
+      {% endblock %}
+    </div>
+  </main>
 
   {% endblock %}
 </body>

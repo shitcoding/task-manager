@@ -6,19 +6,12 @@
 {% block title %}{% translate "Create label" %}{% endblock %}
 
 {% block content %}
-<main role="main" class="container">
-  <div class="jumbotron">
+<h1 class="my-4">{% translate "Create label" %}</h1>
 
-    <h1 class="my-4">{% translate "Create label" %}</h1>
-
-    <form method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <input type="submit" class="btn btn-primary" value="{% translate 'Save' %}">
-      <a class="btn btn-outline-primary" href="{% url 'labels' %}">{% translate 'Return to labels list' %}</a>
-    </form>
-
-  </div>
-</main>
-
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <input type="submit" class="btn btn-primary" value="{% translate 'Save' %}">
+  <a class="btn btn-outline-primary" href="{% url 'labels' %}">{% translate 'Return to labels list' %}</a>
+</form>
 {% endblock %}
