@@ -64,7 +64,7 @@ class Task(models.Model):
     status = models.ForeignKey(Status, on_delete=models.CASCADE)
     label = models.ManyToManyField(
         Label,
-        related_name="labels",
+        related_name="tasks",
     )
 
     def __str__(self):
