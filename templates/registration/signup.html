@@ -6,17 +6,11 @@
 {% block title %}{% translate 'Sign up' %}{% endblock %}
 
 {% block content %}
-<main role="main" class="container">
-  <div class="jumbotron">
-    <h1>{% translate 'Sign up' %}</h1>
+<h1>{% translate 'Sign up' %}</h1>
 
-    <form method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <input type="submit" value="{% translate 'Sign up' %}">
-    </form>
-
-
-  </div>
-</main>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <input type="submit" value="{% translate 'Sign up' %}">
+</form>
 {% endblock %}

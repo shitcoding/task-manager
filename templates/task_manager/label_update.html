@@ -6,21 +6,12 @@
 {% block title %}{% translate "Edit label" %}{% endblock %}
 
 {% block content %}
-<main role="main" class="container">
+<h1 class="my-4">{% translate "Edit label" %}</h1>
 
-  <div class="jumbotron">
-
-    <h1 class="my-4">{% translate "Edit label" %}</h1>
-
-    <form method="post">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <input type="submit" class="btn btn-primary" value="{% translate 'Save' %}">
-      <a class="btn btn-outline-primary" href="{% url 'labels' %}">{% translate 'Return to labels list' %}</a>
-    </form>
-
-  </div>
-
-</main>
-
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <input type="submit" class="btn btn-primary" value="{% translate 'Save' %}">
+  <a class="btn btn-outline-primary" href="{% url 'labels' %}">{% translate 'Return to labels list' %}</a>
+</form>
 {% endblock %}
