@@ -1,0 +1,26 @@
+{% extends 'task_manager/base.html' %}
+
+{% load i18n %}
+{% load bootstrap4 %}
+
+{% block title %}{% translate "Delete label" %}{% endblock %}
+
+{% block content %}
+<main role="main" class="container">
+
+  <div class="jumbotron">
+
+    <h1 class="my-4">{% translate "Delete label" %}</h1>
+
+    <form method="post">
+      {% csrf_token %}
+      <p>{% translate 'Are you sure you want to delete the label' %} {{ object }} ?</p>
+      <input type="submit" class="btn btn-danger" value="{% translate 'Delete' %}">
+      <a class="btn btn-outline-primary" href="{% url 'labels' %}">{% translate 'Return to labels list' %}</a>
+    </form>
+
+  </div>
+
+</main>
+
+{% endblock %}
