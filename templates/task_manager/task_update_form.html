@@ -1,0 +1,26 @@
+{% extends 'task_manager/base.html' %}
+
+{% load i18n %}
+{% load bootstrap4 %}
+
+{% block title %}{% translate "Update task" %}{% endblock %}
+
+{% block content %}
+<main role="main" class="container">
+
+  <div class="jumbotron">
+
+    <h1 class="my-4">{% translate "Update task" %}</h1>
+
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" class="btn btn-primary" value="{% translate 'Save' %}">
+      <a class="btn btn-outline-primary" href="{% url 'tasks' %}">{% translate 'Return to tasks list' %}</a>
+    </form>
+
+  </div>
+
+</main>
+
+{% endblock %}
