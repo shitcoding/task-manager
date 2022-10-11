@@ -9,11 +9,7 @@ from django.utils.translation import gettext as _
 from django.views import View, generic
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
-from task_manager.forms import (
-    TaskCreationForm,
-    UserChangeForm,
-    UserCreationForm,
-)
+from task_manager.forms import TaskForm, UserChangeForm, UserCreationForm
 from task_manager.models import Label, SiteUser, Status, Task
 
 
@@ -125,13 +121,16 @@ class UserDeleteView(
 
     def handle_no_permission(self):
         messages.error(
-            self.request, "You have no permissions to change other user"
+            self.request,
+            "You have no permissions to change other user",
         )
         return redirect(reverse_lazy("users"))
 
 
 # Tasks
 class TaskListView(CustomLoginRequiredMixin, generic.ListView):
+    """Tasks list page view."""
+
     template_name = "task_manager/task_list.html"
     context_object_name = "task_list"
 
@@ -143,11 +142,12 @@ class TaskListView(CustomLoginRequiredMixin, generic.ListView):
 class TaskCreateView(
     CustomLoginRequiredMixin,
     SuccessMessageMixin,
-    generic.CreateView,
+    CreateView,
 ):
     """Task creation page view."""
 
-    form_class = TaskCreationForm
+    model = Task
+    form_class = TaskForm
     template_name = "task_manager/task_create_form.html"
     success_url = reverse_lazy("tasks")
     success_message = _("Task created successfully")
@@ -165,16 +165,19 @@ class TaskDetailView(CustomLoginRequiredMixin, generic.DetailView):
     model = Task
     template_name = "task_manager/task_detail.html"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
 
-
-class TaskUpdateView(CustomLoginRequiredMixin, View):
+class TaskUpdateView(
+    CustomLoginRequiredMixin,
+    SuccessMessageMixin,
+    UpdateView,
+):
     """Task update page view."""
 
-    def get(self, request, task_id):
-        return HttpResponse(f"You're at task {task_id} update page")
+    model = Task
+    form_class = TaskForm
+    template_name = "task_manager/task_update_form.html"
+    success_url = reverse_lazy("tasks")
+    success_message = _("Task updated successfully")
 
 
 class TaskDeleteView(CustomLoginRequiredMixin, View):
