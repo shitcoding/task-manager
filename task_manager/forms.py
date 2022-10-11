@@ -20,8 +20,8 @@ class UserChangeForm(forms.UserChangeForm):
         fields = ("username", "first_name", "last_name")
 
 
-class TaskCreationForm(ModelForm):
-    """Task creation form."""
+class TaskForm(ModelForm):
+    """Form for creation or edit of the task."""
 
     class Meta:
         model = Task
