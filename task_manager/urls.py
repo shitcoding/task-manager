@@ -65,12 +65,12 @@ urlpatterns = [
         name="label_create",
     ),
     path(
-        "labels/<int:label_id>/update/",
+        "labels/<int:pk>/update/",
         views.LabelUpdateView.as_view(),
         name="label_update",
     ),
     path(
-        "labels/<int:label_id>/delete/",
+        "labels/<int:pk>/delete/",
         views.LabelDeleteView.as_view(),
         name="label_delete",
     ),
