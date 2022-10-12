@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     "task_manager.apps.TaskManagerConfig",
     "bootstrap4",
     "django_filters",
+    "crispy_forms",
+    "crispy_bootstrap5",
 ]
 
 MIDDLEWARE = [
@@ -184,3 +186,8 @@ BOOTSTRAP4 = {
     "include_jquery": True,
     "theme_url": "https://getbootstrap.com/docs/4.5/examples/navbar-fixed/navbar-top-fixed.css",
 }
+
+# crispy_forms template settings
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"
