@@ -3,28 +3,34 @@
 {% load i18n %}
 {% load bootstrap4 %}
 
-{% block title %}{% translate "Tasks" %}{% endblock %}
+{% block title %}{% translate 'Tasks' %}{% endblock %}
 
 {% block content %}
-<h1 class="my-4">{% translate "Tasks" %}</h1>
+<h1 class="my-4">{% translate 'Tasks' %}</h1>
 
-<a class="nav-link" href="{% url 'task_create' %}">{% translate "Create task" %}</a>
+<a class="nav-link" href="{% url 'task_create' %}">{% translate 'Create task' %}</a>
+
+<form method="get">
+  {{ filter.form.as_p }}
+  {{ self_tasks_checkbox.as_p }}
+  <input class="btn btn-primary" type="submit" value="{% translate 'Show' %}">
+</form>
 
 <table class="table table-striped">
   <thead>
     <tr>
       <th>ID</th>
-      <th>{% translate "Name" %}</th>
-      <th>{% translate "Status" %}</th>
-      <th>{% translate "Creator" %}</th>
-      <th>{% translate "Performer" %}</th>
-      <th>{% translate "Created on" %}</th>
+      <th>{% translate 'Name' %}</th>
+      <th>{% translate 'Status' %}</th>
+      <th>{% translate 'Creator' %}</th>
+      <th>{% translate 'Performer' %}</th>
+      <th>{% translate 'Created on' %}</th>
       <th></th>
     </tr>
   </thead>
   <tbody>
 
-    {% for task in task_list %}
+    {% for task in filter.queryset %}
     <tr>
       <td>{{ task.id }}</td>
       <td>
@@ -46,9 +52,9 @@
 
       <td>{{ task.created_on }}</td>
       <td>
-        <a href="{% url 'task_update' task.id %}">{% translate "Edit" %}</a>
+        <a href="{% url 'task_update' task.id %}">{% translate 'Edit' %}</a>
         <br>
-        <a href="{% url 'task_delete' task.id %}">{% translate "Delete" %}</a>
+        <a href="{% url 'task_delete' task.id %}">{% translate 'Delete' %}</a>
       </td>
     </tr>
     {% endfor %}
