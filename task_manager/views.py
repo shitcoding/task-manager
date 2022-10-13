@@ -1,13 +1,21 @@
+import django_filters
 from django.contrib import messages
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.forms import BooleanField, CheckboxInput
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils.translation import gettext as _
 from django.views import generic
 
-from task_manager.forms import TaskForm, UserChangeForm, UserCreationForm
+from task_manager.filters import TaskFilter
+from task_manager.forms import (
+    SelfTasksCheckbox,
+    TaskForm,
+    UserChangeForm,
+    UserCreationForm,
+)
 from task_manager.models import Label, SiteUser, Status, Task
 
 
@@ -131,11 +139,25 @@ class TaskListView(CustomLoginRequiredMixin, generic.ListView):
     """Tasks list page view."""
 
     template_name = "task_manager/task_list.html"
-    context_object_name = "task_list"
 
-    def get_queryset(self):
+    def get_queryset(self, self_tasks=False):
         """Return the list of all tasks."""
-        return Task.objects.order_by("-created_on")
+        if self_tasks:
+            queryset = Task.objects.filter(creator=self.request.user)
+        else:
+            queryset = Task.objects.order_by("-created_on")
+        filter = TaskFilter(self.request.GET, queryset)
+        return filter.qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        self_tasks_checkbox = SelfTasksCheckbox(self.request.GET)
+        context["self_tasks_checkbox"] = self_tasks_checkbox
+        self_tasks = self_tasks_checkbox.data.get("self_tasks", None) == "on"
+        queryset = self.get_queryset(self_tasks)
+        filter = TaskFilter(self.request.GET, queryset)
+        context["filter"] = filter
+        return context
 
 
 class TaskCreateView(
