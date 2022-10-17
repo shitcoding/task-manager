@@ -1,5 +1,6 @@
 import django_filters
 
+from task_manager.forms import TaskFilterForm
 from task_manager.models import Task
 
 
@@ -8,4 +9,10 @@ class TaskFilter(django_filters.FilterSet):
 
     class Meta:
         model = Task
-        fields = ["status", "performer", "label"]
+        form = TaskFilterForm
+
+        fields = [
+            "status",
+            "performer",
+            "label",
+        ]

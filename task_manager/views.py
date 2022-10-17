@@ -1,4 +1,3 @@
-import django_filters
 from django.contrib import messages
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -10,10 +9,10 @@ from django.views import generic
 
 from task_manager.filters import TaskFilter
 from task_manager.forms import (
-    SelfTasksCheckbox,
     SiteUserChangeForm,
     SiteUserCreationForm,
     TaskEditForm,
+    ToggleOnlyOwnTasks,
 )
 from task_manager.models import Label, SiteUser, Status, Task
 
@@ -99,6 +98,7 @@ class SiteUserUpdateView(
         )
 
     def handle_no_permission(self):
+        """Show error message if user has no permissions to update profile."""
         messages.error(
             self.request,
             "You have no permissions to change other user",
@@ -128,6 +128,7 @@ class SiteUserDeleteView(
         )
 
     def handle_no_permission(self):
+        """Show error message if user has no permissions to delete profile."""
         messages.error(
             self.request,
             _("You have no permissions to change other user"),
@@ -147,17 +148,18 @@ class TaskListView(CustomLoginRequiredMixin, generic.ListView):
             queryset = Task.objects.filter(creator=self.request.user)
         else:
             queryset = Task.objects.order_by("-created_on")
-        filter = TaskFilter(self.request.GET, queryset)
-        return filter.qs
+        task_filter = TaskFilter(self.request.GET, queryset)
+        return task_filter.qs
 
     def get_context_data(self, **kwargs):
+        """Get context data of task filter view."""
         context = super().get_context_data(**kwargs)
-        self_tasks_checkbox = SelfTasksCheckbox(self.request.GET)
-        context["self_tasks_checkbox"] = self_tasks_checkbox
-        self_tasks = self_tasks_checkbox.data.get("self_tasks", None) == "on"
+        toggle_self_tasks = ToggleOnlyOwnTasks(self.request.GET)
+        context["toggle_self_tasks"] = toggle_self_tasks
+        self_tasks = toggle_self_tasks.data.get("self_tasks", None) == "on"
         queryset = self.get_queryset(self_tasks)
-        filter = TaskFilter(self.request.GET, queryset)
-        context["filter"] = filter
+        task_filter = TaskFilter(self.request.GET, queryset)
+        context["task_filter"] = task_filter
         return context
 
 
@@ -175,6 +177,7 @@ class TaskCreateView(
     success_message = _("Task created successfully")
 
     def form_valid(self, form):
+        """Set current user as task creator."""
         task = form.save(commit=False)
         task.creator = self.request.user
         task.save()
@@ -224,7 +227,7 @@ class TaskDeleteView(
         )
 
     def handle_no_permission(self):
-        """Show error message if user tries to delete task created by other user."""
+        """Show error message when deleting task created by other user."""
         messages.error(
             self.request,
             _("You can't delete the task created by other user"),
@@ -287,6 +290,8 @@ class StatusDeleteView(
 
 # Labels
 class LabelListView(CustomLoginRequiredMixin, generic.ListView):
+    """Labels list page view."""
+
     template_name = "task_manager/label_list.html"
     context_object_name = "label_list"
 

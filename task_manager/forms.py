@@ -1,3 +1,4 @@
+from crispy_forms.bootstrap import InlineField, StrictButton
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Column, Field, Layout, Row, Submit
 from django import forms
@@ -59,10 +60,63 @@ class TaskEditForm(forms.ModelForm):
         )
 
 
+class TaskFilterForm(forms.ModelForm):
+    """Form for filtering tasks list."""
 
-class SelfTasksCheckbox(forms.Form):
+    class Meta:
+        model = Task
+        fields = [
+            "status",
+            "performer",
+            "label",
+        ]
+
+    def __init__(self, *args, **kwargs):
+        """Control form attributes and its layout."""
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = "form-inline d-flex"
+        self.helper.form_tag = False
+        self.helper.form_method = "GET"
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    InlineField("status", css_class="form-group my-2 mr-2"),
+                ),
+                Column(
+                    InlineField("performer", css_class="form-group my-2 mr-2"),
+                ),
+                css_class="form-row my-2",
+            ),
+            Row(
+                Column(InlineField("label", css_class="form-group my-2 mr-2")),
+                Column(),
+                css_class="form-row my-2",
+            ),
+            StrictButton(
+                _("Show"),
+                type="submit",
+                css_class="btn btn-primary mx-2",
+            ),
+        )
+
+
+class ToggleOnlyOwnTasks(forms.Form):
+    """Checkbox for showing only own tasks in tasks list."""
+
     self_tasks = forms.BooleanField(
         label="Only own tasks",
         widget=forms.CheckboxInput,
         required=False,
     )
+
+    def __init__(self, *args, **kwargs):
+        """Control form attributes and its layout."""
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = "form-inline"
+        self.helper.form_tag = False
+        self.helper.form_method = "GET"
+        self.helper.layout = Layout(
+            InlineField("self_tasks", css_class="form-group"),
+        )
