@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from task_manager.models import SiteUser, Task
 
 
-class UserCreationForm(UserCreationForm):
+class SiteUserCreationForm(UserCreationForm):
     """User creation form."""
 
     class Meta(UserCreationForm.Meta):
@@ -12,7 +12,7 @@ class UserCreationForm(UserCreationForm):
         fields = ("username", "first_name", "last_name")
 
 
-class UserChangeForm(UserChangeForm):
+class SiteUserChangeForm(UserChangeForm):
     """User change form."""
 
     class Meta(UserChangeForm.Meta):

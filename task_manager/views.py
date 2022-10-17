@@ -13,8 +13,8 @@ from task_manager.filters import TaskFilter
 from task_manager.forms import (
     SelfTasksCheckbox,
     TaskForm,
-    UserChangeForm,
-    UserCreationForm,
+    SiteUserChangeForm,
+    SiteUserCreationForm,
 )
 from task_manager.models import Label, SiteUser, Status, Task
 
@@ -42,7 +42,7 @@ class LoginView(SuccessMessageMixin, auth_views.LoginView):
 class SignupView(SuccessMessageMixin, generic.CreateView):
     """Signup page view."""
 
-    form_class = UserCreationForm
+    form_class = SiteUserCreationForm
     template_name = "registration/signup.html"
     success_url = reverse_lazy("login")
     success_message = _("User created successfully")
@@ -58,7 +58,9 @@ class LogoutView(auth_views.LogoutView):
         return super().dispatch(request, *args, **kwargs)
 
 
-class UserListView(generic.ListView):
+class SiteUserListView(generic.ListView):
+    """Site users list view."""
+
     template_name = "task_manager/user_list.html"
     context_object_name = "user_list"
 
@@ -67,7 +69,7 @@ class UserListView(generic.ListView):
         return SiteUser.objects.order_by("-signup_date")
 
 
-class UserUpdateView(
+class SiteUserUpdateView(
     CustomLoginRequiredMixin,
     SuccessMessageMixin,
     UserPassesTestMixin,
@@ -78,13 +80,13 @@ class UserUpdateView(
     model = SiteUser
     template_name = "registration/user_update.html"
 
-    form_class = UserChangeForm
+    form_class = SiteUserChangeForm
     success_url = reverse_lazy("users")
     success_message = _("User info changed successfully")
 
     def get_context_data(self, **kwargs):
         """Add password change form to page context."""
-        context = super(UserUpdateView, self).get_context_data(**kwargs)
+        context = super(SiteUserUpdateView, self).get_context_data(**kwargs)
         context["password_change_form"] = auth_views.PasswordChangeForm(
             user=self.request.user,
         )
@@ -105,7 +107,7 @@ class UserUpdateView(
         return redirect(reverse_lazy("users"))
 
 
-class UserDeleteView(
+class SiteUserDeleteView(
     CustomLoginRequiredMixin,
     SuccessMessageMixin,
     UserPassesTestMixin,
