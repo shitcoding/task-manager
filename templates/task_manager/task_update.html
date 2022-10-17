@@ -2,16 +2,14 @@
 
 {% load i18n %}
 {% load bootstrap4 %}
+{% load crispy_forms_tags %}
 
 {% block title %}{% translate "Update task" %}{% endblock %}
 
 {% block content %}
 <h1 class="my-4">{% translate "Update task" %}</h1>
 
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <input type="submit" class="btn btn-primary" value="{% translate 'Save' %}">
-  <a class="btn btn-outline-primary" href="{% url 'tasks' %}">{% translate 'Return to tasks list' %}</a>
-</form>
+{% csrf_token %}
+{% crispy form %}
+
 {% endblock %}
