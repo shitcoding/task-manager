@@ -135,3 +135,77 @@ def test_edit_other_user_permission_denied(client, create_user, faker):
     assert "You have no permissions to change other user" in str(
         redirect_response.content,
     )
+
+
+def test_update_own_user_account(client, auto_login_user, faker):
+    """
+    Test updating own user profile.
+
+    Should change user profile data, redirect to user list page
+    and show success flash message.
+    """
+    client, user = auto_login_user()
+    # Assert that user can access own profile update page
+    response = client.get(
+        reverse("user_update", kwargs={"pk": user.pk}),
+    )
+    assert response.status_code == 200
+    assert "User Update" in str(response.content)
+
+    # Assert that user can change profile data
+    new_username = faker.user_name()
+    new_first_name = faker.first_name()
+    new_last_name = faker.last_name()
+    data = {
+        "username": new_username,
+        "first_name": new_first_name,
+        "last_name": new_last_name,
+    }
+    response = client.post(
+        reverse("user_update", kwargs={"pk": user.pk}),
+        data,
+    )
+    # Should redirect to user list page
+    assert response.status_code == 302
+    assert response.url == reverse("users")
+    # Should show success flash message after redirect
+    redirect_response = client.get(response.url)
+    assert "User info changed successfully" in str(
+        redirect_response.content,
+    )
+    # User info should be changed successfully
+    updated_user = SiteUser.objects.get(pk=user.pk)
+    assert updated_user.username == new_username
+    assert updated_user.first_name == new_first_name
+    assert updated_user.last_name == new_last_name
+
+
+def test_delete_own_user_account(client, auto_login_user):
+    """
+    Test deleting own user profile.
+
+    Should delete user profile, redirect to user list page
+    and show success flash message.
+    """
+    client, user = auto_login_user()
+    # Assert that user can access own profile deletion page
+    response = client.get(
+        reverse("user_delete", kwargs={"pk": user.pk}),
+    )
+    assert response.status_code == 200
+    assert "Delete account" in str(response.content)
+
+    response = client.post(
+        reverse("user_delete", kwargs={"pk": user.pk}),
+    )
+    # Should redirect to user list page
+    assert response.status_code == 302
+    assert response.url == reverse("users")
+    # Should show success flash message after redirect
+    redirect_response = client.get(response.url)
+    assert "User deleted successfully" in str(
+        redirect_response.content,
+    )
+    # User account should be deleted successfully
+    with pytest.raises(SiteUser.DoesNotExist):
+        updated_user = SiteUser.objects.get(pk=user.pk)
