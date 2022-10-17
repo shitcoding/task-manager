@@ -16,7 +16,7 @@ def create_user(db, django_user_model, test_password):
     """
     Fixture creating a new test user.
 
-    If no username is provided, uuid is used as a username.
+    If no username is provided, unique uuid is used as a username.
     """
 
     def make_user(**kwargs):
@@ -46,20 +46,27 @@ def auto_login_user(db, client, create_user, test_password):
 
 
 @pytest.mark.django_db
-def test_correct_user_creation(create_user):
+def test_correct_user_creation(client, create_user, faker):
     """Test correct creation of a new user."""
+    username = faker.user_name()
+    first_name = faker.first_name()
+    last_name = faker.last_name()
+
     test_user = create_user(
-        username="username1",
-        first_name="FirstName1",
-        last_name="LastName1",
+        username=username,
+        first_name=first_name,
+        last_name=last_name,
     )
     assert SiteUser.objects.count() == 1
-    assert test_user.username == "username1"
-    assert test_user.username != "username2"
-    assert test_user.first_name == "FirstName1"
-    assert test_user.first_name != "FirstName2"
-    assert test_user.last_name == "LastName1"
-    assert test_user.last_name != "LastName2"
+    assert test_user.username == username
+    assert test_user.first_name == first_name
+    assert test_user.last_name == last_name
+    # Created user should be shown in users list
+    client.force_login(test_user)
+    response = client.get(reverse("users"))
+    assert test_user.username in str(response.content)
+    assert test_user.first_name in str(response.content)
+    assert test_user.last_name in str(response.content)
 
 
 @pytest.mark.django_db
@@ -95,7 +102,7 @@ def test_auth_urls_by_authorized_user(client, auto_login_user):
 
     Should return status code 200.
     """
-    client, user = auto_login_user()
+    client, _ = auto_login_user()
 
     statuses_response = client.get(reverse("statuses"))
     assert statuses_response.status_code == 200
@@ -108,14 +115,14 @@ def test_auth_urls_by_authorized_user(client, auto_login_user):
 
 
 @pytest.mark.django_db
-def test_edit_other_user_permission_denied(client, create_user):
+def test_edit_other_user_permission_denied(client, create_user, faker):
     """
     Test an attempt of editing other user profile.
 
     Should redirect to user list page and show flash message with error.
     """
-    test_user1 = create_user(username="username1")
-    test_user2 = create_user(username="username2")
+    test_user1 = create_user(username=faker.user_name())
+    test_user2 = create_user(username=faker.user_name())
     client.force_login(test_user1)
     response = client.get(
         reverse("user_update", kwargs={"pk": test_user2.pk}),
