@@ -12,9 +12,9 @@ from django.views import generic
 from task_manager.filters import TaskFilter
 from task_manager.forms import (
     SelfTasksCheckbox,
-    TaskForm,
     SiteUserChangeForm,
     SiteUserCreationForm,
+    TaskEditForm,
 )
 from task_manager.models import Label, SiteUser, Status, Task
 
@@ -170,7 +170,7 @@ class TaskCreateView(
     """Task creation page view."""
 
     model = Task
-    form_class = TaskForm
+    form_class = TaskEditForm
     template_name = "task_manager/task_create.html"
     success_url = reverse_lazy("tasks")
     success_message = _("Task created successfully")
@@ -197,7 +197,7 @@ class TaskUpdateView(
     """Task update page view."""
 
     model = Task
-    form_class = TaskForm
+    form_class = TaskEditForm
     template_name = "task_manager/task_update.html"
     success_url = reverse_lazy("tasks")
     success_message = _("Task updated successfully")
