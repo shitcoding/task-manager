@@ -84,7 +84,7 @@ class SiteUserUpdateView(
 
     def get_context_data(self, **kwargs):
         """Add password change form to page context."""
-        context = super(SiteUserUpdateView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context["password_change_form"] = auth_views.PasswordChangeForm(
             user=self.request.user,
         )
