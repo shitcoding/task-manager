@@ -20,7 +20,13 @@ from task_manager.models import Label, SiteUser, Status, Task
 class CustomLoginRequiredMixin(LoginRequiredMixin):
     """LoginRequiredMixin with custom login page url."""
 
-    login_url = "/login/"
+    def handle_no_permission(self):
+        """Show error message if user is not logged in."""
+        messages.error(
+            self.request,
+            _("Please, log in to access this page"),
+        )
+        return super().handle_no_permission()
 
 
 class IndexView(generic.TemplateView):
