@@ -125,6 +125,39 @@ def test_labels_routes_by_authorized_user(
     assert response.status_code == 200
 
 
+@pytest.mark.parametrize(
+    "need_pk, route",
+    (
+        (False, "labels"),
+        (False, "label_create"),
+        (True, "label_update"),
+        (True, "label_delete"),
+    ),
+)
+def test_labels_routes_by_unauthorized_user(
+    need_pk,
+    route,
+    client,
+    create_label,
+):
+    """
+    Test accessing labels routes by unauthorized user.
+
+    Should redirect to login page.
+    After successful login should redirect to initially requested page.
+    """
+    login_url = reverse("login")
+    test_label = create_label()
+
+    if need_pk:
+        url = reverse(route, kwargs={"pk": test_label.pk})
+    else:
+        url = reverse(route)
+    response = client.get(url)
+    assert response.status_code == 302
+    assert response.url == f"{login_url}?next={url}"
+
+
 # Test statuses routes
 @pytest.mark.parametrize(
     "need_pk, route",
