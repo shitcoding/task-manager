@@ -4,45 +4,11 @@ import pytest
 from django.urls import reverse
 
 from task_manager.models import SiteUser
-
-
-@pytest.fixture
-def test_password():
-    return "Strong_test_password_1337"
-
-
-@pytest.fixture
-def create_user(db, django_user_model, test_password):
-    """
-    Fixture creating a new test user.
-
-    If no username is provided, unique uuid is used as a username.
-    """
-
-    def make_user(**kwargs):
-        kwargs["password"] = test_password
-        if "username" not in kwargs:
-            kwargs["username"] = str(uuid.uuid4())
-        return django_user_model.objects.create_user(**kwargs)
-
-    return make_user
-
-
-@pytest.fixture
-def auto_login_user(db, client, create_user, test_password):
-    """
-    Fixture that automatically logs in a provided user.
-
-    If no user is provided, a new test user is created and then is logged in.
-    """
-
-    def make_auto_login(user=None):
-        if user is None:
-            user = create_user()
-        client.login(username=user.username, password=test_password)
-        return client, user
-
-    return make_auto_login
+from task_manager.tests.fixtures import (
+    auto_login_user,
+    create_user,
+    test_password,
+)
 
 
 @pytest.mark.django_db
