@@ -24,6 +24,7 @@ def test_user_list_page(client):
     assert response.status_code == 200
 
 
+# Test tasks routes
 @pytest.mark.parametrize(
     "need_pk, route",
     [
@@ -35,7 +36,11 @@ def test_user_list_page(client):
     ],
 )
 def test_tasks_routes_by_authorized_user(
-    need_pk, route, client, auto_login_user, create_task
+    need_pk,
+    route,
+    client,
+    auto_login_user,
+    create_task,
 ):
     """
     Test accessing tasks routes by authorized user.
@@ -64,7 +69,10 @@ def test_tasks_routes_by_authorized_user(
     ],
 )
 def test_tasks_routes_by_unauthorized_user(
-    need_pk, route, client, create_task
+    need_pk,
+    route,
+    client,
+    create_task,
 ):
     """
     Test accessing tasks routes by unauthorized user.
@@ -84,6 +92,7 @@ def test_tasks_routes_by_unauthorized_user(
     assert response.url == f"{login_url}?next={url}"
 
 
+# Test labels routes
 @pytest.mark.parametrize(
     "need_pk, route",
     (
@@ -94,7 +103,11 @@ def test_tasks_routes_by_unauthorized_user(
     ),
 )
 def test_labels_routes_by_authorized_user(
-    need_pk, route, client, auto_login_user, create_label
+    need_pk,
+    route,
+    client,
+    auto_login_user,
+    create_label,
 ):
     """
     Test accessing labels routes by authorized user.
@@ -112,6 +125,7 @@ def test_labels_routes_by_authorized_user(
     assert response.status_code == 200
 
 
+# Test statuses routes
 @pytest.mark.parametrize(
     "need_pk, route",
     (
@@ -122,7 +136,11 @@ def test_labels_routes_by_authorized_user(
     ),
 )
 def test_statuses_routes_by_authorized_user(
-    need_pk, route, client, auto_login_user, create_status
+    need_pk,
+    route,
+    client,
+    auto_login_user,
+    create_status,
 ):
     """
     Test accessing statuses routes by authorized user.
@@ -150,7 +168,10 @@ def test_statuses_routes_by_authorized_user(
     ),
 )
 def test_statuses_routes_by_unauthorized_user(
-    need_pk, route, client, create_status
+    need_pk,
+    route,
+    client,
+    create_status,
 ):
     """
     Test accessing statuses routes by unauthorized user.
