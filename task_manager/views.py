@@ -233,7 +233,15 @@ class TaskDeleteView(
         )
 
     def handle_no_permission(self):
-        """Show error message when deleting task created by other user."""
+        """
+        Handle case when user has no permissions to delete the task.
+
+        If user is not authenticated: redirect to login and show error message.
+        If user is authenticated: show error message when deleting task created
+        by other user.
+        """
+        if not self.request.user.is_authenticated:
+            return CustomLoginRequiredMixin.handle_no_permission(self)
         messages.error(
             self.request,
             _("You can't delete the task created by other user"),
@@ -352,7 +360,15 @@ class LabelDeleteView(
         return not self.get_object().tasks.all()
 
     def handle_no_permission(self):
-        """Show error message if label is associated with task."""
+        """
+        Handle case when user has no permissions to delete the label.
+
+        If user is not authenticated: redirect to login and show error message.
+        If user is authenticated: show error message when deleting label
+        associated with a task.
+        """
+        if not self.request.user.is_authenticated:
+            return CustomLoginRequiredMixin.handle_no_permission(self)
         messages.error(
             self.request,
             _("Can't delete the label associated with a task"),
