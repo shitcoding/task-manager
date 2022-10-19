@@ -112,4 +112,59 @@ def test_labels_routes_by_authorized_user(
     assert response.status_code == 200
 
 
+@pytest.mark.parametrize(
+    "need_pk, route",
+    (
+        (False, "statuses"),
+        (False, "status_create"),
+        (True, "status_update"),
+        (True, "status_delete"),
+    ),
+)
+def test_statuses_routes_by_authorized_user(
+    need_pk, route, client, auto_login_user, create_status
+):
+    """
+    Test accessing statuses routes by authorized user.
+
+    Should return status code 200.
+    """
+    client, user = auto_login_user()
+
+    test_status = create_status()
+
+    if need_pk:
+        response = client.get(reverse(route, kwargs={"pk": test_status.pk}))
+    else:
+        response = client.get(reverse(route))
     assert response.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "need_pk, route",
+    (
+        (False, "statuses"),
+        (False, "status_create"),
+        (True, "status_update"),
+        (True, "status_delete"),
+    ),
+)
+def test_statuses_routes_by_unauthorized_user(
+    need_pk, route, client, create_status
+):
+    """
+    Test accessing statuses routes by unauthorized user.
+
+    Should redirect to login page.
+    After successful login should redirect to initially requested page.
+    """
+    login_url = reverse("login")
+    test_status = create_status()
+
+    if need_pk:
+        url = reverse(route, kwargs={"pk": test_status.pk})
+    else:
+        url = reverse(route)
+    response = client.get(url)
+    assert response.status_code == 302
+    assert response.url == f"{login_url}?next={url}"
