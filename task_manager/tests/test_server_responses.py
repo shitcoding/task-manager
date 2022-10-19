@@ -82,4 +82,34 @@ def test_tasks_routes_by_unauthorized_user(
     response = client.get(url)
     assert response.status_code == 302
     assert response.url == f"{login_url}?next={url}"
+
+
+@pytest.mark.parametrize(
+    "need_pk, route",
+    (
+        (False, "labels"),
+        (False, "label_create"),
+        (True, "label_update"),
+        (True, "label_delete"),
+    ),
+)
+def test_labels_routes_by_authorized_user(
+    need_pk, route, client, auto_login_user, create_label
+):
+    """
+    Test accessing labels routes by authorized user.
+
+    Should return status code 200.
+    """
+    client, user = auto_login_user()
+
+    test_label = create_label()
+
+    if need_pk:
+        response = client.get(reverse(route, kwargs={"pk": test_label.pk}))
+    else:
+        response = client.get(reverse(route))
+    assert response.status_code == 200
+
+
     assert response.status_code == 200
