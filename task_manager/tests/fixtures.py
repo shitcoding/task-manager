@@ -1,3 +1,5 @@
+from random import randrange
+
 import pytest
 
 from task_manager.models import Label, Status, Task
@@ -78,6 +80,23 @@ def create_label(db, faker):
         return Label.objects.create(**kwargs)
 
     return make_label
+
+
+@pytest.fixture
+def create_labels_set(db, create_label):
+    """
+    Fixture creating a random set of labels.
+
+    Returns list of label objects.
+    """
+
+    def make_labels_set(min=1, max=10):
+        labels = []
+        for _ in range(randrange(min, max)):
+            labels.append(create_label())
+        return labels
+
+    return make_labels_set
 
 
 @pytest.fixture
