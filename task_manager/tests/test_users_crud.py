@@ -179,7 +179,7 @@ def test_delete_own_user_account(client, auto_login_user):
     )
     # User account should be deleted successfully
     with pytest.raises(SiteUser.DoesNotExist):
-        updated_user = SiteUser.objects.get(pk=user.pk)
+        SiteUser.objects.get(pk=user.pk)
 
 
 @pytest.mark.django_db
