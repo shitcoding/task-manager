@@ -132,3 +132,39 @@ def test_task_update(
     assert str(updated_task.status) in tasks_list_content
     assert str(updated_task.creator) in tasks_list_content
     assert str(updated_task.performer) in tasks_list_content
+
+
+def test_delete_own_task(
+    client,
+    create_task,
+    auto_login_user,
+):
+    """
+    Test deleting a task.
+
+    Should delete a task, redirect to tasks list page
+    and show success flash message.
+    """
+    client, user = auto_login_user()
+    task = create_task(creator=user)
+    # Assert that user can access own task deletion page
+    response = client.get(
+        reverse("task_delete", kwargs={"pk": task.pk}),
+    )
+    assert response.status_code == 200
+    assert "Delete task" in str(response.content)
+
+    response = client.post(
+        reverse("task_delete", kwargs={"pk": task.pk}),
+    )
+    # Should redirect to tasks list page
+    assert response.status_code == 302
+    assert response.url == reverse("tasks")
+    # Should show success flash message after redirect
+    redirect_response = client.get(response.url)
+    assert "Task deleted successfully" in str(
+        redirect_response.content,
+    )
+    # Task should be deleted successfully
+    with pytest.raises(Task.DoesNotExist):
+        Task.objects.get(pk=task.pk)
