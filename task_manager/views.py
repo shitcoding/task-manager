@@ -244,7 +244,7 @@ class TaskDeleteView(
             return CustomLoginRequiredMixin.handle_no_permission(self)
         messages.error(
             self.request,
-            _("You can't delete the task created by other user"),
+            _("You cannot delete the task created by other user"),
         )
         return redirect(reverse_lazy("tasks"))
 
