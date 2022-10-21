@@ -371,6 +371,6 @@ class LabelDeleteView(
             return CustomLoginRequiredMixin.handle_no_permission(self)
         messages.error(
             self.request,
-            _("Can't delete the label associated with a task"),
+            _("Can not delete the label associated with a task"),
         )
         return redirect(reverse_lazy("labels"))
