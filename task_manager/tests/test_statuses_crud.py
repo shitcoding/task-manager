@@ -33,3 +33,16 @@ def test_status_creation(client, auto_login_user, faker):
     assert "Status created successfully" in str(
         redirect_response.content,
     )
+
+    assert Status.objects.count() == 1
+    status = Status.objects.all()[0]
+    assert status.name == name
+    assert status.created_on == created_on
+
+    # Created status should be shown on the statuses list page
+    statuses_list_content = str(redirect_response.content)
+    assert status.name in statuses_list_content
+    assert (
+        status.created_on.strftime("%d.%m.%Y %H:%M:%S")
+        in statuses_list_content
+    )
