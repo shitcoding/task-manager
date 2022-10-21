@@ -168,3 +168,31 @@ def test_delete_own_task(
     # Task should be deleted successfully
     with pytest.raises(Task.DoesNotExist):
         Task.objects.get(pk=task.pk)
+
+
+def test_delete_other_users_task_permission_denied(
+    client,
+    create_task,
+    create_user,
+    auto_login_user,
+):
+    """
+    Test an attempt of deleting a task created by other user.
+
+    Should redirect to tasks list page and show flash message with error.
+    """
+    client, user = auto_login_user()
+    creator = create_user()
+    task = create_task(creator=creator)
+    response = client.get(
+        reverse("task_delete", kwargs={"pk": task.pk}),
+    )
+    # Should redirect to tasks list page
+    assert response.status_code == 302
+    assert response.url == reverse("tasks")
+    # Should show flash message with error after redirect
+    redirect_response = client.get(response.url)
+    print(redirect_response.content)
+    assert "You cannot delete the task created by other user" in str(
+        redirect_response.content,
+    )
