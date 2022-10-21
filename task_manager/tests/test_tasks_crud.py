@@ -74,6 +74,40 @@ def test_task_creation(
     assert str(task.performer) in tasks_list_content
 
 
+def test_task_details(
+    client,
+    create_task,
+    auto_login_user,
+):
+    """
+    Test accessing task details page.
+
+    Should return 200 status code, and task data should be present
+    on the page.
+    """
+    client, user = auto_login_user()
+    task = create_task()
+    response = client.get(
+        reverse("task_detail", kwargs={"pk": task.pk}),
+    )
+    # Assert that user can access task details page
+    assert response.status_code == 200
+    page_content = str(response.rendered_content)
+    assert "Task details" in page_content
+    # Assert that task data is present on task details page
+    task_details = [
+        task.name,
+        task.description,
+        task.creator,
+        task.performer,
+        task.status,
+        task.created_on.strftime("%d.%m.%Y %H:%M:%S"),
+    ]
+    task_labels = list(task.label.all())
+    for field in task_details + task_labels:
+        assert str(field) in page_content
+
+
 def test_task_update(
     client,
     create_task,
@@ -192,7 +226,6 @@ def test_delete_other_users_task_permission_denied(
     assert response.url == reverse("tasks")
     # Should show flash message with error after redirect
     redirect_response = client.get(response.url)
-    print(redirect_response.content)
     assert "You cannot delete the task created by other user" in str(
         redirect_response.content,
     )
