@@ -30,7 +30,7 @@
       </div>
       <div class="row p-1">
         <div class="col">{% translate "Created on" %}</div>
-        <div class="col">{{ object.created_on }}</div>
+        <div class="col">{{ object.created_on|date:"d.m.Y H:i:s" }}</div>
       </div>
       <div class="row p-1">
         <div class="col">

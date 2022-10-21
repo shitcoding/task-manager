@@ -50,7 +50,7 @@
         <td>{{ task.performer.username }}</td>
       {% endif %}
 
-      <td>{{ task.created_on }}</td>
+      <td>{{ task.created_on|date:"d.m.Y H:i:s" }}</td>
       <td>
         <a href="{% url 'task_update' task.id %}">{% translate 'Edit' %}</a>
         <br>

@@ -25,7 +25,7 @@
       <td>{{ user.id }}</td>
       <td>{{ user.username }}</td>
       <td>{{ user.first_name }} {{ user.last_name }}</td>
-      <td>{{ user.signup_date }}</td>
+      <td>{{ user.signup_date|date:"d.m.Y H:i:s" }}</td>
       <td>
         <a href="{% url 'user_update' user.id %}">{% translate "Edit" %}</a>
         <br>
