@@ -81,3 +81,39 @@ def test_status_update(
     assert updated_status.name == new_name
     # Created status should be shown on the statuses list page
     assert updated_status.name in str(redirect_response.content)
+
+
+def test_delete_status(
+    client,
+    create_status,
+    auto_login_user,
+):
+    """
+    Test deleting a status.
+
+    Should delete a status, redirect to statuses list page
+    and show success flash message.
+    """
+    client, user = auto_login_user()
+    status = create_status()
+    # Assert that user can access status deletion page
+    response = client.get(
+        reverse("status_delete", kwargs={"pk": status.pk}),
+    )
+    assert response.status_code == 200
+    assert "Delete status" in str(response.content)
+
+    response = client.post(
+        reverse("status_delete", kwargs={"pk": status.pk}),
+    )
+    # Should redirect to statuses list page
+    assert response.status_code == 302
+    assert response.url == reverse("statuses")
+    # Should show success flash message after redirect
+    redirect_response = client.get(response.url)
+    assert "Status deleted successfully" in str(
+        redirect_response.content,
+    )
+    # Status should be deleted successfully
+    with pytest.raises(Status.DoesNotExist):
+        Status.objects.get(pk=status.pk)
