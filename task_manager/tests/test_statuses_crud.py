@@ -46,3 +46,38 @@ def test_status_creation(client, auto_login_user, faker):
         status.created_on.strftime("%d.%m.%Y %H:%M:%S")
         in statuses_list_content
     )
+
+
+def test_status_update(
+    client,
+    create_status,
+    faker,
+    auto_login_user,
+):
+    """
+    Test updating status details.
+
+    Should change status details, redirect to statuses list page
+    and show success flash message.
+    """
+    status = create_status()
+    new_name = faker.pystr(min_chars=10, max_chars=15)
+
+    client, _ = auto_login_user()
+    response = client.post(
+        reverse("status_update", kwargs={"pk": status.pk}),
+        {"name": new_name},
+    )
+    # Should redirect to statuses list page
+    assert response.status_code == 302
+    assert response.url == reverse("statuses")
+    # Should show success flash message after redirect
+    redirect_response = client.get(response.url)
+    assert "Status updated successfully" in str(
+        redirect_response.content,
+    )
+    # Status details should be changed successfully
+    updated_status = Status.objects.get(pk=status.pk)
+    assert updated_status.name == new_name
+    # Created status should be shown on the statuses list page
+    assert updated_status.name in str(redirect_response.content)
