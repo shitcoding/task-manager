@@ -82,3 +82,65 @@ def test_label_update(
     assert updated_label.name == new_name
     # Created label should be shown on the labels list page
     assert updated_label.name in str(redirect_response.content)
+
+
+def test_delete_label(
+    client,
+    create_label,
+    auto_login_user,
+):
+    """
+    Test deleting a label with no tasks associated with it.
+
+    Should delete a label, redirect to labels list page
+    and show success flash message.
+    """
+    client, _ = auto_login_user()
+    label = create_label()
+    # Assert that user can access label deletion page
+    response = client.get(
+        reverse("label_delete", kwargs={"pk": label.pk}),
+    )
+    assert response.status_code == 200
+    assert "Delete label" in str(response.content)
+
+    response = client.post(
+        reverse("label_delete", kwargs={"pk": label.pk}),
+    )
+    # Should redirect to labels list page
+    assert response.status_code == 302
+    assert response.url == reverse("labels")
+    # Should show success flash message after redirect
+    redirect_response = client.get(response.url)
+    assert "Label deleted successfully" in str(
+        redirect_response.content,
+    )
+    # Label should be deleted successfully
+    with pytest.raises(Label.DoesNotExist):
+        Label.objects.get(pk=label.pk)
+
+
+def test_delete_label_with_associated_task(
+    client,
+    create_label,
+    create_task,
+    auto_login_user,
+):
+    """
+    Test deleting a label with a task associated with it.
+
+    Should redirect to labels list page and show flash message with error.
+    """
+    client, _ = auto_login_user()
+    label = create_label()
+    task = create_task()
+    task.label.set([label])
+    response = client.get(reverse("label_delete", kwargs={"pk": label.pk}))
+    # Should redirect to labels list page
+    assert response.status_code == 302
+    assert response.url == reverse("labels")
+    # Should show flash message with error after redirect
+    redirect_response = client.get(response.url)
+    assert "Can not delete the label associated with a task" in str(
+        redirect_response.content,
+    )
