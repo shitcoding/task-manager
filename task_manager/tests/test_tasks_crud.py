@@ -72,6 +72,7 @@ def test_task_creation(
     assert str(task.status) in tasks_list_content
     assert str(task.creator) in tasks_list_content
     assert str(task.performer) in tasks_list_content
+    assert task.created_on.strftime("%d.%m.%Y %H:%M:%S") in tasks_list_content
 
 
 def test_task_details(
