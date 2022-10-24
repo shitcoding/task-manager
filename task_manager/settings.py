@@ -17,6 +17,8 @@ logging.basicConfig(
     datefmt="%H:%M:%S",
     style="{",
 )
+# Mute debug logging for faker library used in tests
+logging.getLogger("faker").setLevel(logging.ERROR)
 
 
 SECRET_KEY = misc.getenv("SECRET_KEY")
