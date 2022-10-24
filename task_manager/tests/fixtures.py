@@ -121,11 +121,37 @@ def create_task(db, faker, create_user, create_status, create_label):
             kwargs["created_on"] = faker.past_datetime()
         if "status" not in kwargs:
             kwargs["status"] = create_status()
-        if "label" not in kwargs:
-            label = create_label()
+        # Remove label from kwargs in order to assign it via
+        # many-to-many manager with Task.label.set()
+        label = kwargs.pop("label", create_label())
 
         task = Task.objects.create(**kwargs)
-        task.label.set([label])
+        if isinstance(label, list):
+            task.label.set(label)
+        elif isinstance(label, Label):
+            task.label.set([label])
         return task
 
     return make_task
+
+
+@pytest.fixture
+def create_tasks_set(db, create_task):
+    """
+    Fixture creating a random set of tasks.
+
+    If num_tasks argument is provided, number of created tasks
+    equals num_tasks. Otherwise, number of created tasks is
+    random beetween min and max.
+    Returns list of created Task objects.
+    """
+
+    def make_tasks_set(num_tasks=None, min=1, max=10, **kwargs):
+        tasks = []
+        if not num_tasks:
+            num_tasks = randrange(min, max)
+        for _ in range(num_tasks):
+            tasks.append(create_task(**kwargs))
+        return tasks
+
+    return make_tasks_set
