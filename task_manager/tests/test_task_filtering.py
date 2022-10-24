@@ -34,7 +34,7 @@ def test_task_filtering_by_status(
         reverse("tasks"),
         {"status": target_status.pk},
     )
-    filtered_tasks = response.context["object_list"]
+    filtered_tasks = response.context_data["task_filter"].queryset
     # Filtered tasks set should be identical to initial target_tasks set
     assert set(filtered_tasks) == set(target_tasks)
     # Each filtered task's status should be target_status
@@ -62,7 +62,7 @@ def test_task_filtering_by_label(
         reverse("tasks"),
         {"label": [label.pk for label in target_labels]},
     )
-    filtered_tasks = response.context["object_list"]
+    filtered_tasks = response.context_data["task_filter"].queryset
     # Filtered tasks set should be identical to initial target_tasks set
     assert set(filtered_tasks) == set(target_tasks)
     # Each filtered task's labels should be target_labels
@@ -82,18 +82,44 @@ def test_task_filtering_by_performer(
     Should return tasks set with specified performer.
     """
     target_performer = create_user()
-    other_user = create_user()
     target_tasks = create_tasks_set(num_tasks=10, performer=target_performer)
-    other_tasks = create_tasks_set(min=10, max=20, performer=other_user)
+    create_tasks_set(min=10, max=20)
 
     client, user = auto_login_user()
     response = client.get(
         reverse("tasks"),
         {"performer": target_performer.pk},
     )
-    filtered_tasks = response.context["object_list"]
+    filtered_tasks = response.context_data["task_filter"].queryset
     # Filtered tasks set should be identical to initial target_tasks set
     assert set(filtered_tasks) == set(target_tasks)
     # Each filtered task's performer should be target_performer
     for task in filtered_tasks:
         assert task.performer == target_performer
+
+
+def test_task_filtering_own_tasks(
+    client,
+    create_tasks_set,
+    create_user,
+    auto_login_user,
+):
+    """
+    Test filtering only own tasks.
+
+    Should return only the tasks created by user.
+    """
+    client, target_user = auto_login_user()
+    target_tasks = create_tasks_set(num_tasks=10, creator=target_user)
+    create_tasks_set(min=10, max=20)
+
+    response = client.get(
+        reverse("tasks"),
+        {"self_tasks": "on"},
+    )
+    filtered_tasks = response.context_data["task_filter"].queryset
+    # Filtered tasks set should be identical to initial target_tasks set
+    assert set(filtered_tasks) == set(target_tasks)
+    # Each filtered task's creator should be target_user
+    for task in filtered_tasks:
+        assert task.creator == target_user
