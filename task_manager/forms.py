@@ -1,4 +1,4 @@
-from crispy_forms.bootstrap import InlineField, StrictButton
+from crispy_forms.bootstrap import FormActions, InlineField, StrictButton
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Column, Field, Layout, Row, Submit
 from django import forms
@@ -75,28 +75,47 @@ class TaskFilterForm(forms.ModelForm):
         """Control form attributes and its layout."""
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_class = "form-inline d-flex"
+        self.helper.form_class = "form-inline center"
         self.helper.form_tag = False
         self.helper.form_method = "GET"
         self.helper.layout = Layout(
-            Row(
-                Column(
-                    InlineField("status", css_class="form-group my-2 mr-2"),
+            Column(
+                Row(
+                    InlineField(
+                        "status",
+                        css_class="my-2 mr-2",
+                    ),
+                    css_class="row col-6",
                 ),
-                Column(
-                    InlineField("performer", css_class="form-group my-2 mr-2"),
+                Row(
+                    InlineField(
+                        "performer",
+                        css_class="my-2 mr-2",
+                    ),
+                    css_class="row col-6",
                 ),
-                css_class="form-row my-2",
+                css_class="px-0",
+            ),
+            Column(
+                InlineField("label"),
+                css_class="px-0",
             ),
             Row(
-                Column(InlineField("label", css_class="form-group my-2 mr-2")),
-                Column(),
-                css_class="form-row my-2",
-            ),
-            StrictButton(
-                _("Show"),
-                type="submit",
-                css_class="btn btn-primary mx-2",
+                FormActions(
+                    StrictButton(
+                        _("Show"),
+                        type="submit",
+                        css_class="btn btn-primary mr-2",
+                    ),
+                    HTML(
+                        f"""
+                    <a class="btn btn-outline-primary" href="{reverse_lazy('tasks')}">
+                        {_('Clear filters')}
+                    </a>
+                    """,
+                    ),
+                ),
+                css_class="row col-12 w-100 my-2",
             ),
         )
 
@@ -118,5 +137,8 @@ class ToggleOnlyOwnTasks(forms.Form):
         self.helper.form_tag = False
         self.helper.form_method = "GET"
         self.helper.layout = Layout(
-            InlineField("self_tasks", css_class="form-group"),
+            Row(
+                InlineField("self_tasks", css_class="form-group"),
+                css_class="my-2 pl-3",
+            ),
         )
