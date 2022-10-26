@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 
 import dj_database_url
+from django.utils.translation import gettext_lazy as _
 
 from task_manager.utils import misc
 
@@ -154,8 +155,8 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = "ru"
 
 LANGUAGES = [
-    ("en", "English"),
-    ("ru", "Russian"),
+    ("en", _("English")),
+    ("ru", _("Russian")),
 ]
 
 LOCALE_PATHS = [
