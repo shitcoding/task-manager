@@ -1,7 +1,7 @@
 {% extends 'task_manager/bootstrap.html' %}
 
 {% load i18n %}
-{% get_current_language as LANGUAGE_CODE %}
+
 {% load bootstrap4 %}
 
 
@@ -35,7 +35,7 @@
       </ul>
 
       <!-- Log in / Sign up / Logout links -->
-      <ul class="navbar-nav">
+      <ul class="navbar-nav mr-2">
         {% if request.user.is_anonymous %}
         <li class="nav-item">
           <a class="nav-link" href="{% url 'login' %}">{% translate 'Log in' %}</a>
@@ -53,9 +53,19 @@
         {% endif %}
       </ul>
 
+      <!-- Language switcher -->
+      <div class="navbar-nav">
+        <form action="{% url 'set_language' %}" method="post">
+          {% csrf_token %}
+          <button name="language" value="en" class="btn btn-sm btn-outline-light">🇺🇸</button>
+          <button name="language" value="ru" class="btn btn-sm btn-outline-light">🇷🇺</button>
+        </form>
+      </div>
+
     </div>
   </nav>
   {% autoescape off %}{% bootstrap_messages %}{% endautoescape %}
+
 
   <main role="main" class="container">
     <div class="jumbotron">
