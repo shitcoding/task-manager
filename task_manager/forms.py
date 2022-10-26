@@ -79,26 +79,20 @@ class TaskFilterForm(forms.ModelForm):
         self.helper.form_tag = False
         self.helper.form_method = "GET"
         self.helper.layout = Layout(
-            Column(
-                Row(
-                    InlineField(
-                        "status",
-                        css_class="my-2 mr-2",
-                    ),
-                    css_class="row col-6",
+            Row(
+                InlineField(
+                    "status",
+                    css_class="my-2 mr-2",
                 ),
-                Row(
-                    InlineField(
-                        "performer",
-                        css_class="my-2 mr-2",
-                    ),
-                    css_class="row col-6",
+                InlineField(
+                    "performer",
+                    css_class="my-2 mr-2",
                 ),
-                css_class="px-0",
-            ),
-            Column(
-                InlineField("label"),
-                css_class="px-0",
+                InlineField(
+                    "label",
+                    css_class="my-2 mr-2",
+                ),
+                css_class="row col-12 mt-2",
             ),
             Row(
                 FormActions(
@@ -115,7 +109,7 @@ class TaskFilterForm(forms.ModelForm):
                     """,
                     ),
                 ),
-                css_class="row col-12 w-100 my-2",
+                css_class="row col-12 mt-2",
             ),
         )
 
@@ -139,6 +133,6 @@ class ToggleOnlyOwnTasks(forms.Form):
         self.helper.layout = Layout(
             Row(
                 InlineField("self_tasks", css_class="form-group"),
-                css_class="my-2 pl-3",
+                css_class="mb-2 pl-3",
             ),
         )
