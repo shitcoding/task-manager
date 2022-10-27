@@ -88,13 +88,13 @@ class Task(models.Model):
     )
     creator = models.ForeignKey(
         SiteUser,
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
         related_name="creator",
         verbose_name=_("Creator"),
     )
     performer = models.ForeignKey(
         SiteUser,
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
         related_name="performer",
         verbose_name=_("Performer"),
     )
@@ -104,7 +104,7 @@ class Task(models.Model):
     )
     status = models.ForeignKey(
         Status,
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
         verbose_name=_("Status"),
     )
     label = models.ManyToManyField(
