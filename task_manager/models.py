@@ -26,7 +26,6 @@ class SiteUser(AbstractUser):
 
     class Meta(object):
         verbose_name = _("User")
-        verbose_name_plural = _("Users")
 
     def __str__(self):
         """Represent an instance as a string."""
@@ -47,7 +46,6 @@ class Label(models.Model):
 
     class Meta(object):
         verbose_name = _("Label")
-        verbose_name_plural = _("Labels")
 
     def __str__(self):
         """Represent an instance as a string."""
@@ -69,7 +67,6 @@ class Status(models.Model):
 
     class Meta(object):
         verbose_name = _("Status")
-        verbose_name_plural = _("Statuses")
 
     def __str__(self):
         """Represent an instance as a string."""
@@ -116,7 +113,6 @@ class Task(models.Model):
 
     class Meta(object):
         verbose_name = _("Task")
-        verbose_name_plural = _("Tasks")
 
     def __str__(self):
         """Represent an instance as a string."""
