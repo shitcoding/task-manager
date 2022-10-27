@@ -3,8 +3,9 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Column, Field, Layout, Row, Submit
 from django import forms
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
+from django.db import models
 from django.urls import reverse_lazy
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 
 from task_manager.models import SiteUser, Task
 
@@ -118,7 +119,7 @@ class ToggleOnlyOwnTasks(forms.Form):
     """Checkbox for showing only own tasks in tasks list."""
 
     self_tasks = forms.BooleanField(
-        label="Only own tasks",
+        label=_("Only own tasks"),
         widget=forms.CheckboxInput,
         required=False,
     )
