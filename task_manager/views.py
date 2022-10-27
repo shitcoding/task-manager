@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from django.views import generic
 
 from task_manager.filters import TaskFilter
@@ -58,7 +58,7 @@ class LogoutView(auth_views.LogoutView):
     def dispatch(self, request, *args, **kwargs):
         """Show flash message when authenticated user logs out."""
         if request.user.is_authenticated:
-            messages.success(request, "You are logged out")
+            messages.success(request, _("You are logged out"))
         return super().dispatch(request, *args, **kwargs)
 
 
@@ -107,7 +107,7 @@ class SiteUserUpdateView(
         """Show error message if user has no permissions to update profile."""
         messages.error(
             self.request,
-            "You have no permissions to change other user",
+            _("You have no permissions to change other user"),
         )
         return redirect(reverse_lazy("users"))
 
