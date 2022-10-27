@@ -37,6 +37,7 @@ class Label(models.Model):
 
     name = models.CharField(
         max_length=30,
+        unique=True,
         verbose_name=_("Name"),
     )
     created_on = models.DateTimeField(
@@ -57,6 +58,7 @@ class Status(models.Model):
 
     name = models.CharField(
         max_length=30,
+        unique=True,
         verbose_name=_("Name"),
     )
 
