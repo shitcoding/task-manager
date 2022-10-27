@@ -7,16 +7,16 @@ class SiteUser(AbstractUser):
     """Model representing Task manager user account."""
 
     username = models.CharField(
-        max_length=50,
+        max_length=30,
         unique=True,
         verbose_name=_("Username"),
     )
     first_name = models.CharField(
-        max_length=100,
+        max_length=30,
         verbose_name=_("First name"),
     )
     last_name = models.CharField(
-        max_length=100,
+        max_length=30,
         verbose_name=_("Last name"),
     )
     signup_date = models.DateTimeField(
@@ -36,7 +36,7 @@ class Label(models.Model):
     """Model representing a task label."""
 
     name = models.CharField(
-        max_length=50,
+        max_length=30,
         verbose_name=_("Name"),
     )
     created_on = models.DateTimeField(
@@ -56,7 +56,7 @@ class Status(models.Model):
     """Model representing a task status."""
 
     name = models.CharField(
-        max_length=50,
+        max_length=30,
         verbose_name=_("Name"),
     )
 
@@ -77,7 +77,7 @@ class Task(models.Model):
     """Model representing a task."""
 
     name = models.CharField(
-        max_length=200,
+        max_length=100,
         verbose_name=_("Name"),
     )
     description = models.TextField(
