@@ -5,6 +5,11 @@ import pytest
 from task_manager.models import Label, Status, Task
 
 
+@pytest.fixture(autouse=True)
+def use_en_lang(settings):
+    settings.LANGUAGE_CODE = "en"
+
+
 @pytest.fixture
 def test_password():
     return "Strong_test_password_1337"

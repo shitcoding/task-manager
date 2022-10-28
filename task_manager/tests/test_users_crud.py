@@ -6,6 +6,7 @@ from task_manager.tests.fixtures import (
     auto_login_user,
     create_user,
     test_password,
+    use_en_lang,
 )
 
 
@@ -33,7 +34,11 @@ def test_correct_user_creation(client, create_user, faker):
     assert user.last_name in str(response.content)
 
 
-def test_update_own_user_account(client, auto_login_user, faker):
+def test_update_own_user_account(
+    client,
+    auto_login_user,
+    faker,
+):
     """
     Test updating own user profile.
 
@@ -77,7 +82,11 @@ def test_update_own_user_account(client, auto_login_user, faker):
 
 
 @pytest.mark.django_db
-def test_edit_other_user_account_permission_denied(client, create_user, faker):
+def test_edit_other_user_account_permission_denied(
+    client,
+    create_user,
+    faker,
+):
     """
     Test an attempt of editing other user profile.
 
@@ -100,7 +109,11 @@ def test_edit_other_user_account_permission_denied(client, create_user, faker):
 
 
 @pytest.mark.django_db
-def test_edit_other_user_account_by_superuser(client, create_user, faker):
+def test_edit_other_user_account_by_superuser(
+    client,
+    create_user,
+    faker,
+):
     """
     Test editing other user profile by superuser.
 
@@ -151,7 +164,10 @@ def test_edit_other_user_account_by_superuser(client, create_user, faker):
 
 
 @pytest.mark.django_db
-def test_delete_own_user_account(client, auto_login_user):
+def test_delete_own_user_account(
+    client,
+    auto_login_user,
+):
     """
     Test deleting own user profile.
 
@@ -183,7 +199,11 @@ def test_delete_own_user_account(client, auto_login_user):
 
 
 @pytest.mark.django_db
-def test_delete_other_user_permission_denied(client, create_user, faker):
+def test_delete_other_user_permission_denied(
+    client,
+    create_user,
+    faker,
+):
     """
     Test an attempt of deleting other user's profile.
 
@@ -206,7 +226,11 @@ def test_delete_other_user_permission_denied(client, create_user, faker):
 
 
 @pytest.mark.django_db
-def test_delete_other_user_account_by_superuser(client, create_user, faker):
+def test_delete_other_user_account_by_superuser(
+    client,
+    create_user,
+    faker,
+):
     """
     Test deleting other user's profile by superuser.
 
