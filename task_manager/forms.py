@@ -3,7 +3,6 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Column, Field, Layout, Row, Submit
 from django import forms
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
-from django.db import models
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 

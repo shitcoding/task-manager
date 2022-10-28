@@ -18,11 +18,10 @@ class CustomLoginRequiredMixin(LoginRequiredMixin):
 
 class SuccessOrProtectedErrorMessageMixin:
     """
-    Mixin handling successful object deletion message and ProtectedError
-    for generic.DeleteView.
+    Handle successful object deletion and ProtectedError for DeleteView.
 
-    If object can be deleted, shows success message and redirects to success_url.
-    If object is protected, shows protected_error_message and redirects
+    If object can be deleted, show success message and redirect to success_url.
+    If object is protected, show protected_error_message and redirect.
     to success_url.
     """
 
@@ -34,8 +33,10 @@ class SuccessOrProtectedErrorMessageMixin:
 
     def post(self, request, *args, **kwargs):
         """
-        Delete the target object or show error message and redirect
-        if object is referenced by a ForeignKey.
+        Handle deletion of the target object.
+
+        Delete the target object and show success message.
+        If object is protected, show error message and redirect.
         """
         try:
             messages.success(
