@@ -3,8 +3,6 @@ from django.urls import include, path
 
 from task_manager import views
 
-# from task_manager.views import auth, labels, pages, statuses, tasks, users
-
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.pages.IndexView.as_view(), name="index"),
@@ -50,7 +48,9 @@ urlpatterns = [
     ),
     # Statuses
     path(
-        "statuses/", views.statuses.StatusListView.as_view(), name="statuses"
+        "statuses/",
+        views.statuses.StatusListView.as_view(),
+        name="statuses",
     ),
     path(
         "statuses/create/",
