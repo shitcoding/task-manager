@@ -30,13 +30,21 @@ class CustomLoginRequiredMixin(LoginRequiredMixin):
         return super().handle_no_permission()
 
 
-class ProtectedErrorMessageMixin:
-    """Mixin handling ProtectedError for generic.DeleteView."""
+class SuccessOrProtectedErrorMessageMixin:
+    """
+    Mixin handling successful object deletion message and ProtectedError
+    for generic.DeleteView.
 
+    If object can be deleted, shows success message and redirects to success_url.
+    If object is protected, shows protected_error_message and redirects
+    to success_url.
+    """
+
+    success_message = "Object has been successfully deleted"
     protected_error_message = (
         "Cannot delete object referenced by a ForeignKey."
     )
-    protected_error_redirect_url = None
+    success_url = None
 
     def post(self, request, *args, **kwargs):
         """
@@ -44,13 +52,17 @@ class ProtectedErrorMessageMixin:
         if object is referenced by a ForeignKey.
         """
         try:
+            messages.success(
+                self.request,
+                self.success_message,
+            )
             return self.delete(request, *args, **kwargs)
         except ProtectedError:
             messages.error(
                 self.request,
                 self.protected_error_message,
             )
-            return redirect(reverse_lazy("users"))
+            return success_url
 
 
 class IndexView(generic.TemplateView):
@@ -138,8 +150,7 @@ class SiteUserUpdateView(
 
 class SiteUserDeleteView(
     CustomLoginRequiredMixin,
-    ProtectedErrorMessageMixin,
-    SuccessMessageMixin,
+    SuccessOrProtectedErrorMessageMixin,
     UserPassesTestMixin,
     generic.DeleteView,
 ):
@@ -150,7 +161,6 @@ class SiteUserDeleteView(
 
     success_url = reverse_lazy("users")
     success_message = _("User deleted successfully")
-    protected_error_redirect_url = reverse_lazy("users")
     protected_error_message = _("Cannot delete the user assigned to task")
 
     def test_func(self):
@@ -166,7 +176,7 @@ class SiteUserDeleteView(
             self.request,
             _("You have no permissions to change other user"),
         )
-        return redirect(reverse_lazy("users"))
+        return redirect(self.success_url)
 
 
 # Tasks
@@ -318,8 +328,7 @@ class StatusUpdateView(
 
 class StatusDeleteView(
     CustomLoginRequiredMixin,
-    ProtectedErrorMessageMixin,
-    SuccessMessageMixin,
+    SuccessOrProtectedErrorMessageMixin,
     generic.DeleteView,
 ):
     """Status deletion page view."""
@@ -328,7 +337,6 @@ class StatusDeleteView(
     model = Status
     success_url = reverse_lazy("statuses")
     success_message = _("Status deleted successfully")
-    protected_error_redirect_url = reverse_lazy("statuses")
     protected_error_message = _("Cannot delete the status assigned to task")
 
 
