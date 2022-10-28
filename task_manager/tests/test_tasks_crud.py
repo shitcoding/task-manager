@@ -13,6 +13,7 @@ from task_manager.tests.fixtures import (
     create_task,
     create_user,
     test_password,
+    use_en_lang,
 )
 
 
@@ -23,6 +24,7 @@ def test_task_creation(
     create_labels_set,
     faker,
     auto_login_user,
+    use_en_lang,
 ):
     """Test correct creation of a new task."""
     name = faker.pystr(min_chars=10, max_chars=15)
@@ -79,6 +81,7 @@ def test_task_details(
     client,
     create_task,
     auto_login_user,
+    use_en_lang,
 ):
     """
     Test accessing task details page.
@@ -117,6 +120,7 @@ def test_task_update(
     create_labels_set,
     faker,
     auto_login_user,
+    use_en_lang,
 ):
     """
     Test updating task details.
@@ -173,6 +177,7 @@ def test_delete_own_task(
     client,
     create_task,
     auto_login_user,
+    use_en_lang,
 ):
     """
     Test deleting a task.
@@ -210,6 +215,7 @@ def test_delete_other_users_task_permission_denied(
     create_task,
     create_user,
     auto_login_user,
+    use_en_lang,
 ):
     """
     Test an attempt of deleting a task created by other user.
