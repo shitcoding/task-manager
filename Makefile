@@ -20,6 +20,13 @@ setup: migrate
 shell:
 	@poetry run python manage.py shell
 
+# Need to have GNU gettext installed
+transprepare:
+	@poetry run django-admin makemessages --ignore="static" --ignore=".venv" -a
+
+transcompile:
+	@poetry run django-admin compilemessages --ignore="static" --ignore=".venv"
+
 lint:
 	@poetry run flake8 task_manager
 
