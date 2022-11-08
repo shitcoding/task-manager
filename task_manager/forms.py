@@ -22,7 +22,7 @@ class SiteUserChangeForm(UserChangeForm):
 
     class Meta(UserChangeForm.Meta):
         model = SiteUser
-        fields = ("username", "first_name", "last_name")
+        fields = ["username", "first_name", "last_name"]
 
 
 class TaskEditForm(forms.ModelForm):
@@ -82,34 +82,31 @@ class TaskFilterForm(forms.ModelForm):
             Row(
                 InlineField(
                     "status",
-                    css_class="my-2 mr-2",
+                    css_class="mt-2 mr-2",
                 ),
                 InlineField(
                     "performer",
-                    css_class="my-2 mr-2",
+                    css_class="mt-2 mr-2",
                 ),
                 InlineField(
                     "label",
-                    css_class="my-2 mr-2",
+                    css_class="mt-2 mr-2",
                 ),
-                css_class="row col-12 mt-2",
-            ),
-            Row(
                 FormActions(
                     StrictButton(
                         _("Show"),
                         type="submit",
-                        css_class="btn btn-primary mr-2",
+                        css_class="btn btn-primary mt-2 mr-2",
                     ),
                     HTML(
                         f"""
-                    <a class="btn btn-outline-primary" href="{reverse_lazy('tasks')}">
+                    <a class="btn btn-outline-primary mt-2 mr-2" href="{reverse_lazy('tasks')}">
                         {_('Clear filters')}
                     </a>
                     """,
                     ),
                 ),
-                css_class="row col-12 mt-2",
+                css_class="row col-12",
             ),
         )
 
