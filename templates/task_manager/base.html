@@ -1,9 +1,12 @@
 {% extends 'task_manager/bootstrap.html' %}
 
 {% load i18n %}
-
 {% load bootstrap4 %}
+{% load static %}
 
+{% block bootstrap4_extra_head %}
+<link rel="stylesheet" href="{% static 'task_manager/style.css' %}">
+{% endblock %}
 
 <body class="d-flex flex-column min-vh-100">
   {% block bootstrap4_content %}
