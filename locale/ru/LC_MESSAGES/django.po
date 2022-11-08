@@ -53,7 +53,7 @@ msgstr "Только свои задачи"
 
 #: task_manager/models.py:12 templates/task_manager/user_list.html:15
 msgid "Username"
-msgstr "Имя пользователя"
+msgstr "Логин"
 
 #: task_manager/models.py:16
 msgid "First name"
