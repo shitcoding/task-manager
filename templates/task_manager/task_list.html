@@ -7,9 +7,8 @@
 {% block title %}{% translate 'Tasks' %}{% endblock %}
 
 {% block content %}
-<h1 class="my-4">{% translate 'Tasks' %}</h1>
-
-<a class="btn btn-outline-primary" href="{% url 'task_create' %}">{% translate 'Create task' %}</a>
+<h1 class="my-4 d-inline-block">{% translate 'Tasks' %}</h1>
+<a class="btn btn-outline-primary d-inline-block mb-2 ml-2" href="{% url 'task_create' %}">{% translate 'Create task' %}</a>
 
 <form class="form-inline center" method="get">
   {% crispy task_filter.form %}
