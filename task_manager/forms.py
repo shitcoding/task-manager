@@ -10,11 +10,38 @@ from task_manager.models import SiteUser, Task
 
 
 class SiteUserCreationForm(UserCreationForm):
-    """User creation form."""
+    """Signup form."""
 
     class Meta(UserCreationForm.Meta):
         model = SiteUser
-        fields = ("username", "first_name", "last_name")
+        fields = [
+            "username",
+            "first_name",
+            "last_name",
+            "password1",
+            "password2",
+        ]
+
+    def __init__(self, *args, **kwargs):
+        """Set up form layout."""
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = "POST"
+        self.helper.form_class = "form-horizontal"
+        self.helper.field_class = "col-lg-6 col-md-8"
+        self.helper.form_show_labels = False
+        self.helper.layout = Layout(
+            Field("username", placeholder=_("Username")),
+            Field("first_name", placeholder=_("First name")),
+            Field("last_name", placeholder=_("Last name")),
+            Field("password1", placeholder=_("Password")),
+            Field("password2", placeholder=_("Password confirmation")),
+            Submit(
+                "submit",
+                _("Sign up"),
+                css_class="btn btn-primary mt-2",
+            ),
+        )
 
 
 class SiteUserChangeForm(UserChangeForm):
