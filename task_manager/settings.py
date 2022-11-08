@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    # disable Django’s static file handling and allow WhiteNoise to take over
+    "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
     "task_manager.apps.TaskManagerConfig",
     "bootstrap4",
