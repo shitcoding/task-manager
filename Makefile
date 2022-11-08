@@ -27,6 +27,9 @@ transprepare:
 transcompile:
 	@poetry run django-admin compilemessages --ignore="static" --ignore=".venv"
 
+collectstatic:
+	@poetry run python manage.py collectstatic --no-input
+
 lint:
 	@poetry run flake8 task_manager
 
