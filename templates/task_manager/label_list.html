@@ -6,9 +6,9 @@
 {% block title %}{% translate "Labels" %}{% endblock %}
 
 {% block content %}
-<h1 class="my-4">{% translate "Labels" %}</h1>
+<h1 class="my-4 d-inline-block">{% translate "Labels" %}</h1>
+<a class="btn btn-outline-primary d-inline-block mb-2 ml-2" href="{% url 'label_create' %}">{% translate "Create label" %}</a>
 
-<a class="btn btn-outline-primary mb-2" href="{% url 'label_create' %}">{% translate "Create label" %}</a>
 <table class="table table-striped">
   <thead>
     <tr>
