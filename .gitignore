@@ -10,6 +10,7 @@ htmlcov/
 .python-version
 *.sqlite3
 *.bak
+*.mo
 .coverage
 coverage.xml
 *.log
