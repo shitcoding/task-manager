@@ -99,7 +99,9 @@ class SitePasswordChangeForm(PasswordChangeForm):
                 css_class="my-0",
             ),
             Submit(
-                "submit", _("Change password"), css_class="btn btn-primary"
+                "submit",
+                _("Change password"),
+                css_class="btn btn-primary",
             ),
         )
 

@@ -1,5 +1,4 @@
 from django.contrib import messages
-from django.contrib.auth import views as auth_views
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import redirect
@@ -7,7 +6,7 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views import generic
 
-from task_manager.forms import SitePasswordChangeForm, SiteUserChangeForm
+from task_manager.forms import SiteUserChangeForm
 from task_manager.models import SiteUser
 from task_manager.views.mixins import (
     CustomLoginRequiredMixin,
