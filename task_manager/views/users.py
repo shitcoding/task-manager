@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views import generic
 
-from task_manager.forms import SiteUserChangeForm
+from task_manager.forms import SitePasswordChangeForm, SiteUserChangeForm
 from task_manager.models import SiteUser
 from task_manager.views.mixins import (
     CustomLoginRequiredMixin,
@@ -40,14 +40,6 @@ class SiteUserUpdateView(
     form_class = SiteUserChangeForm
     success_url = reverse_lazy("users")
     success_message = _("User info changed successfully")
-
-    def get_context_data(self, **kwargs):
-        """Add password change form to page context."""
-        context = super().get_context_data(**kwargs)
-        context["password_change_form"] = auth_views.PasswordChangeForm(
-            user=self.request.user,
-        )
-        return context
 
     def test_func(self):
         """Check if user have permissions to update profile."""
