@@ -25,10 +25,12 @@
       <td>{{ user.username }}</td>
       <td>{{ user.first_name }} {{ user.last_name }}</td>
       <td>{{ user.signup_date|date:"d.m.Y H:i:s" }}</td>
+      {% if request.user.is_authenticated %}
       <td>
         <a class="btn btn-sm btn-outline-primary btn-action mr-1" href="{% url 'user_update' user.id %}" title="{% translate 'Edit' %}"><i class="fas fa-pencil-alt"></i></a>
         <a class="btn btn-sm btn-outline-danger btn-action" href="{% url 'user_delete' user.id %}" title="{% translate 'Delete' %}"><i class="fas fa-trash"></i></a>
       </td>
+      {% endif %}
     </tr>
     {% endfor %}
 
