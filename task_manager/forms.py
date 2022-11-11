@@ -3,6 +3,11 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Column, Field, Layout, Row, Submit
 from django import forms
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
+from django.contrib.auth.forms import (
+    PasswordChangeForm,
+    UserChangeForm,
+    UserCreationForm,
+)
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
@@ -50,6 +55,35 @@ class SiteUserChangeForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
         model = SiteUser
         fields = ["username", "first_name", "last_name"]
+
+
+class SitePasswordChangeForm(PasswordChangeForm):
+    """Password change form."""
+
+    class Meta(PasswordChangeForm):
+        model = SiteUser
+        fields = ["old_password", "new_password1", "new_password2"]
+
+    def __init__(self, user, *args, **kwargs):
+        """Set up form layout."""
+        super().__init__(user, *args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = "POST"
+        self.helper.form_class = "form-horizontal"
+        self.helper.field_class = "col-lg-6 col-md-8"
+        self.helper.form_show_labels = False
+        self.helper.layout = Layout(
+            Field("old_password", placeholder=_("Old password")),
+            Field("new_password1", placeholder=_("New password")),
+            Field(
+                "new_password2",
+                placeholder=_("Confirm new password"),
+                css_class="my-0",
+            ),
+            Submit(
+                "submit", _("Change password"), css_class="btn btn-primary"
+            ),
+        )
 
 
 class TaskEditForm(forms.ModelForm):
