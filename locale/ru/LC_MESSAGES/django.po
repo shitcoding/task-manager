@@ -300,6 +300,7 @@ msgid "User Update"
 msgstr "Изменение профиля"
 
 #: templates/registration/user_update.html:13
+#: templates/task_manager/base.html:53
 msgid "Update profile"
 msgstr "Изменить профиль"
 
