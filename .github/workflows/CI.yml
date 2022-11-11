@@ -5,7 +5,7 @@ on:
   - pull_request
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -21,9 +21,12 @@ jobs:
         run: |
           pip install poetry
           make install
-      - name: Run linter and pytest
+      - name: Run linter and pytest checks
         run: |
           make check
+        env:
+          SECRET_KEY: secret
+          DB_ENGINE: SQLite
       #- name: Test & publish Codeclimate code coverage
       #  uses: paambaati/codeclimate-action@v3.0.0
       #  env:
