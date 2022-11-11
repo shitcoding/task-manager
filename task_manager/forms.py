@@ -2,7 +2,6 @@ from crispy_forms.bootstrap import FormActions, InlineField, StrictButton
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Column, Field, Layout, Row, Submit
 from django import forms
-from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.contrib.auth.forms import (
     PasswordChangeForm,
     UserChangeForm,
@@ -54,7 +53,26 @@ class SiteUserChangeForm(UserChangeForm):
 
     class Meta(UserChangeForm.Meta):
         model = SiteUser
-        fields = ["username", "first_name", "last_name"]
+        fields = [
+            "username",
+            "first_name",
+            "last_name",
+        ]
+
+    def __init__(self, *args, **kwargs):
+        """Set up form layout."""
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = "POST"
+        self.helper.form_class = "form-horizontal"
+        self.helper.field_class = "col-lg-6 col-md-8"
+        self.helper.label_class = "ml-3"
+        # self.helper.form_show_labels = False
+        self.helper.layout = Layout(
+            Field("username", placeholder=_("Enter new username")),
+            Field("first_name", placeholder=_("Enter new first name")),
+            Field("last_name", placeholder=_("Enter new last name")),
+        )
 
 
 class SitePasswordChangeForm(PasswordChangeForm):

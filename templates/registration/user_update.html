@@ -1,16 +1,16 @@
 {% extends 'task_manager/base.html' %}
 
 {% load i18n %}
+{% load crispy_forms_tags %}
 
 {% block title %}{% translate 'User Update' %}{% endblock %}
 
 {% block content %}
 <h1>{% translate 'User Update' %}</h1>
 
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  {{ password_change_form.as_p }}
-  <input type="submit" value="{% translate 'Update' %}">
+<form method="POST">
+  {% crispy form %}
+  <input class="btn btn-primary mr-3 inline-block" type="submit" name="submit" value="{% translate 'Update profile' %}">
+  <a class="inline-block" href="{% url 'password_change' request.user.pk %}">{% translate "Change password" %}</a>
 </form>
 {% endblock %}
