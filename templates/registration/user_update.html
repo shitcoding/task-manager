@@ -11,6 +11,6 @@
 <form method="POST">
   {% crispy form %}
   <input class="btn btn-primary mr-3 inline-block" type="submit" name="submit" value="{% translate 'Update profile' %}">
-  <a class="inline-block" href="{% url 'password_change' request.user.pk %}">{% translate "Change password" %}</a>
+  <a class="inline-block" href="{% url 'password_change' request.user.pk %}">{% translate 'Change password' %}</a>
 </form>
 {% endblock %}
