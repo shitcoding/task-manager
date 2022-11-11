@@ -65,9 +65,8 @@ class SiteUserChangeForm(UserChangeForm):
         self.helper = FormHelper()
         self.helper.form_method = "POST"
         self.helper.form_class = "form-horizontal"
-        self.helper.field_class = "col-lg-6 col-md-8"
-        self.helper.label_class = "ml-3"
-        # self.helper.form_show_labels = False
+        self.helper.field_class = "col-lg-4 col-md-6"
+        self.helper.label_class = "col-lg-2"
         self.helper.layout = Layout(
             Field("username", placeholder=_("Enter new username")),
             Field("first_name", placeholder=_("Enter new first name")),
