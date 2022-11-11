@@ -50,7 +50,7 @@
         </li>
         {% else %}
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'user_update' request.user.pk %}">
+          <a class="nav-link" href="{% url 'user_update' request.user.pk %}" title="{% translate 'Update profile' %}">
             <i class="fa fa-user" aria-hidden="true"></i> {{ request.user.username }}
           </a>
         </li>
