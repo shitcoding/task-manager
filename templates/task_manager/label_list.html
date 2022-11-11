@@ -25,9 +25,8 @@
       <td>{{ label.name }}</td>
       <td>{{ label.created_on|date:"d.m.Y H:i:s" }}</td>
       <td>
-        <a href="{% url 'label_update' label.id %}">{% translate "Edit" %}</a>
-        <br>
-        <a href="{% url 'label_delete' label.id %}">{% translate "Delete" %}</a>
+        <a class="btn btn-sm btn-outline-primary btn-action mr-1" href="{% url 'label_update' label.id %}" title="{% translate 'Edit' %}"><i class="fas fa-pencil-alt"></i></a>
+        <a class="btn btn-sm btn-outline-danger btn-action" href="{% url 'label_delete' label.id %}" title="{% translate 'Delete' %}"><i class="fas fa-trash"></i></a>
       </td>
     </tr>
     {% endfor %}

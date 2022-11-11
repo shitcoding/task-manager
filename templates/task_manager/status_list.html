@@ -25,9 +25,8 @@
       <td>{{ status.name }}</td>
       <td>{{ status.created_on|date:"d.m.Y H:i:s" }}</td>
       <td>
-        <a href="{% url 'status_update' status.id %}">{% translate "Edit" %}</a>
-        <br>
-        <a href="{% url 'status_delete' status.id %}">{% translate "Delete" %}</a>
+        <a class="btn btn-sm btn-outline-primary btn-action mr-1" href="{% url 'status_update' status.id %}" title="{% translate 'Edit' %}"><i class="fas fa-pencil-alt"></i></a>
+        <a class="btn btn-sm btn-outline-danger btn-action" href="{% url 'status_delete' status.id %}" title="{% translate 'Delete' %}"><i class="fas fa-trash"></i></a>
       </td>
     </tr>
     {% endfor %}
