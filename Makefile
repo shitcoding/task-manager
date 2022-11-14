@@ -39,12 +39,20 @@ selfcheck:
 test:
 	@poetry run pytest
 
-test-coverage:
-	@poetry run pytest --cov=task_manager --cov-report=xml
+test-coverage-report: test
+	@poetry run coverage report -m $(ARGS)
+	@poetry run coverage erase
+
+test-coverage-report-xml:
+	@poetry run coverage xml
 
 check: lint selfcheck test requirements.txt
 
 deploy:
 	git push heroku
+
+start: migrate transcompile
+	@poetry run gunicorn task_manager.wsgi --bind 0.0.0.0:$(PORT)
+	# poetry run python3 manage.py runserver 0.0.0.0:$(PORT)
 
 .PHONY: install secretkey requirements.txt migrate setup shell lint selfcheck test check deploy
