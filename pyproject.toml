@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "hexlet-code"
+name = "django-task-manager"
 version = "0.0.1"
 description = "Task manager with Django backend"
 authors = ["shitcoding <shitcoder@pm.me>"]
