@@ -37,7 +37,7 @@ selfcheck:
 	@poetry check
 
 test:
-	@poetry run pytest
+	@poetry run pytest --cov=task_manager --cov-report=xml
 
 test-coverage-report: test
 	@poetry run coverage report -m $(ARGS)
@@ -53,6 +53,5 @@ deploy:
 
 start: migrate transcompile
 	@poetry run gunicorn task_manager.wsgi --bind 0.0.0.0:$(PORT)
-	# poetry run python3 manage.py runserver 0.0.0.0:$(PORT)
 
 .PHONY: install secretkey requirements.txt migrate setup shell lint selfcheck test check deploy
