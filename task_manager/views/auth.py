@@ -5,12 +5,17 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from django.views import generic
 
-from task_manager.forms import SitePasswordChangeForm, SiteUserCreationForm
+from task_manager.forms import (
+    LoginForm,
+    SitePasswordChangeForm,
+    SiteUserCreationForm,
+)
 
 
 class LoginView(SuccessMessageMixin, auth_views.LoginView):
     """Login page view."""
 
+    form_class = LoginForm
     next_page = reverse_lazy("index")
     success_message = _("You are logged in")
 
