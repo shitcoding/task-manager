@@ -2,10 +2,10 @@
 
 {% load i18n %}
 
-{% block title %}{% translate "Task details" %}{% endblock %}
+{% block title %}{% translate 'Task details' %}{% endblock %}
 
 {% block content %}
-<h1 class="my-4">{% translate "Task details" %}</h1>
+<h1 class="my-4">{% translate 'Task details' %}</h1>
 
 <div class="card">
   <div class="card-header bg-secondary text-white">
@@ -16,24 +16,24 @@
     <hr>
     <div class="container">
       <div class="row p-1">
-        <div class="col">{% translate "Creator" %}</div>
+        <div class="col"><b>{% translate 'Creator' %}</b></div>
         <div class="col">{{ object.creator }}</div>
       </div>
       <div class="row p-1">
-        <div class="col">{% translate "Performer" %}</div>
+        <div class="col"><b>{% translate 'Performer' %}</b></div>
         <div class="col">{{ object.performer }}</div>
       </div>
       <div class="row p-1">
-        <div class="col">{% translate "Status" %}</div>
+        <div class="col"><b>{% translate 'Status' %}</b></div>
         <div class="col">{{ object.status }}</div>
       </div>
       <div class="row p-1">
-        <div class="col">{% translate "Created on" %}</div>
+        <div class="col"><b>{% translate 'Created on' %}</b></div>
         <div class="col">{{ object.created_on|date:"d.m.Y H:i:s" }}</div>
       </div>
       <div class="row p-1">
         <div class="col">
-          <h6>{% translate "Labels" %}</h6>
+          <h6><b>{% translate 'Labels' %}</b></h6>
           <ul>
             {% for label in object.label.all %}
             <li>{{ label }}</li>
@@ -43,9 +43,8 @@
       </div>
       <div class="row p-1">
         <div class="col">
-          <a href="{% url 'task_update' task.id %}">{% translate "Edit" %}</a>
-          <br>
-          <a href="{% url 'task_delete' task.id %}">{% translate "Delete" %}</a>
+          <a class="btn btn-sm btn-outline-primary btn-action mr-1" href="{% url 'task_update' task.id %}" title="{% translate 'Edit' %}"><i class="fas fa-pencil-alt"></i></a>
+          <a class="btn btn-sm btn-outline-danger btn-action" href="{% url 'task_delete' task.id %}" title="{% translate 'Delete' %}"><i class="fas fa-trash"></i></a>
         </div>
       </div>
     </div>
