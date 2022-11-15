@@ -1,15 +1,12 @@
 {% extends 'task_manager/base.html' %}
 
 {% load i18n %}
+{% load crispy_forms_tags %}
 
 {% block title %}{% translate 'Log in' %}{% endblock %}
 
 {% block content %}
 <h1>{% translate 'Login' %}</h1>
 
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <input type="submit" value="{% translate 'Login' %}">
-</form>
+{% crispy form %}
 {% endblock %}

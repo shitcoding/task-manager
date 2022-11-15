@@ -3,6 +3,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Column, Field, Layout, Row, Submit
 from django import forms
 from django.contrib.auth.forms import (
+    AuthenticationForm,
     PasswordChangeForm,
     UserChangeForm,
     UserCreationForm,
@@ -11,6 +12,35 @@ from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 from task_manager.models import SiteUser, Task
+
+
+class LoginForm(AuthenticationForm):
+    """Login form."""
+
+    class Meta(UserCreationForm.Meta):
+        model = SiteUser
+        fields = [
+            "username",
+            "password",
+        ]
+
+    def __init__(self, *args, **kwargs):
+        """Set up form layout."""
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = "POST"
+        self.helper.form_class = "form-horizontal"
+        self.helper.field_class = "col-lg-4 col-md-6"
+        self.helper.form_show_labels = False
+        self.helper.layout = Layout(
+            Field("username", placeholder=_("Username")),
+            Field("password", placeholder=_("Password")),
+            Submit(
+                "submit",
+                _("Login"),
+                css_class="btn btn-primary ml-0 mt-2",
+            ),
+        )
 
 
 class SiteUserCreationForm(UserCreationForm):
