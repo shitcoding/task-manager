@@ -7,6 +7,7 @@ staticfiles/
 htmlcov/
 
 .env
+.env.*
 .python-version
 *.sqlite3
 *.bak
