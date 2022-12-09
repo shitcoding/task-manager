@@ -26,13 +26,14 @@ SECRET_KEY = misc.getenv("SECRET_KEY")
 
 DEBUG = os.getenv("DEBUG", "true").lower() in {"yes", "1", "true"}
 
-ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1",
-    "[::1]",
-    ".herokuapp.com",
-    "webserver",
-]
+if DEBUG:
+    ALLOWED_HOSTS = ["*"]
+else:
+    ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
+
+# HTTPS / SSL settings
+if os.getenv("LETSENCRYPT_HOST", None):
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 
 INSTALLED_APPS = [
