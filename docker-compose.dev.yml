@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+    command: make run-dev-docker
+    environment:
+      - MODE=dev
+      - DEBUG=true
+      - SECRET_KEY=wow-so-secret
+      - PYTHONUNBUFFERED=1
+      - POSTGRES_DB=task_manager_db
+      - POSTGRES_USER=task_manager_user
+      - POSTGRES_PASSWORD=task_manager_password
+      - POSTGRES_HOST=postgres
+    volumes:
+      - static_volume:/home/app/web/staticfiles
+      - media_volume:/home/app/web/mediafiles
+    ports:
+      - 8000:8000
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:13.0-alpine
+    environment:
+      - POSTGRES_DB=task_manager_db
+      - POSTGRES_USER=task_manager_user
+      - POSTGRES_PASSWORD=task_manager_password
+    volumes:
+      - postgres_volume:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+volumes:
+  postgres_volume:
+  static_volume:
+  media_volume:
