@@ -1,0 +1,65 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+    command: make run-gunicorn-docker
+    env_file:
+      - .env.staging
+    volumes:
+      - static_volume:/home/app/web/staticfiles
+      - media_volume:/home/app/web/mediafiles
+    expose:
+      - 8000
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:13.0-alpine
+    env_file:
+      - .env.staging
+    volumes:
+      - postgres_volume:/var/lib/postgresql/data
+
+  nginx-proxy:
+    container_name: nginx-proxy
+    build: nginx
+    restart: always
+    ports:
+      - 443:443
+      - 80:80
+    volumes:
+      - static_volume:/home/app/web/staticfiles
+      - media_volume:/home/app/web/mediafiles
+      - certs:/etc/nginx/certs
+      - html:/usr/share/nginx/html
+      - vhost:/etc/nginx/vhost.d
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    depends_on:
+      - app
+
+  nginx-proxy-letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    env_file:
+      - ./.env.staging
+    environment:
+      - ACME_CA_URL=https://acme-staging-v02.api.letsencrypt.org/directory
+      - NGINX_PROXY_CONTAINER=nginx-proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - certs:/etc/nginx/certs
+      - html:/usr/share/nginx/html
+      - vhost:/etc/nginx/vhost.d
+      - acme:/etc/acme.sh
+    depends_on:
+      - nginx-proxy
+
+volumes:
+  postgres_volume:
+  static_volume:
+  media_volume:
+  certs:
+  html:
+  vhost:
+  acme:
