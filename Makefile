@@ -61,7 +61,8 @@ selfcheck:
 	@poetry check
 
 test:
-	@poetry run pytest --cov=task_manager --cov-report=xml
+	@export DJANGO_ALLOWED_HOSTS="*"; \
+	poetry run pytest --cov=task_manager --cov-report=xml
 
 test-coverage-report: test
 	@poetry run coverage report -m $(ARGS)
