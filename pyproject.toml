@@ -36,6 +36,7 @@ pytest-dotenv = "^0.5.2"
 Faker = "^15.1.1"
 freezegun = "^1.2.2"
 coverage = "^6.5.0"
+pytest-sugar = "^0.9.6"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
