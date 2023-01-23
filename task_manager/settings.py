@@ -22,13 +22,13 @@ logging.basicConfig(
 logging.getLogger("faker").setLevel(logging.ERROR)
 
 
-DEBUG = os.getenv("DEBUG", "true").lower() in {"yes", "1", "true"}
+DEBUG = os.getenv("DJANGO_DEBUG", "true").lower() in {"yes", "1", "true"}
 
 if DEBUG:
-    SECRET_KEY = os.getenv("SECRET_KEY") or "wow-so-secret"
+    SECRET_KEY = os.getenv("DJANGO_SECRET_KEY") or "wow-so-secret"
     ALLOWED_HOSTS = ["*"]
 else:
-    SECRET_KEY = misc.getenv("SECRET_KEY")
+    SECRET_KEY = misc.getenv("DJANGO_SECRET_KEY")
     ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 
 # HTTPS / SSL settings

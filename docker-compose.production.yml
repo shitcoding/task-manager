@@ -4,9 +4,11 @@ services:
   app:
     build:
       context: .
+      dockerfile: ./compose/Dockerfile
     command: make run-gunicorn-docker
     env_file:
-      - .env.production
+      - ./.envs/.production/.django
+      - ./.envs/.production/.db
     volumes:
       - static_volume:/home/app/web/staticfiles
       - media_volume:/home/app/web/mediafiles
@@ -18,13 +20,13 @@ services:
   postgres:
     image: postgres:13.0-alpine
     env_file:
-      - .env.production
+      - ./.envs/.production/.db
     volumes:
       - postgres_volume:/var/lib/postgresql/data
 
   nginx-proxy:
     container_name: nginx-proxy
-    build: nginx
+    build: ./compose/nginx
     restart: always
     ports:
       - 443:443
@@ -42,7 +44,7 @@ services:
   nginx-proxy-letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion
     env_file:
-      - ./.env.production
+      - ./.envs/.production/.nginx-proxy-letsencrypt
     environment:
       - NGINX_PROXY_CONTAINER=nginx-proxy
     volumes:
