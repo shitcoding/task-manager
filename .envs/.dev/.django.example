@@ -1,0 +1,7 @@
+# Development environment Django app settings and credentials
+# ------------------------------------------------------------------------------
+# General
+MODE=dev
+DJANGO_DEBUG=1
+DJANGO_SECRET_KEY=WowSoSecret # Change the value
+DJANGO_ALLOWED_HOSTS=* # Allowing all hosts in dev mode

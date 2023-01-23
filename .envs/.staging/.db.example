@@ -1,0 +1,12 @@
+# Staging environment database settings
+# ------------------------------------------------------------------------------
+# PostgreSQL credentials
+POSTGRES_DB=task_manager_db # Change the value
+POSTGRES_USER=task_manager_user # Change the value
+POSTGRES_PASSWORD=task_manager_password # Change the value
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+
+# Uncomment this line and comment out postgres settings
+# in order to use managed database like AWS RDS:
+# DATABASE_URL=psql://<user>:<password>@<host>:<port>/<db_name>

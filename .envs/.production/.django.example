@@ -1,0 +1,7 @@
+# Production environment Django app settings and credentials
+# ------------------------------------------------------------------------------
+# General
+MODE=production
+DJANGO_DEBUG=0
+DJANGO_SECRET_KEY=WowSoSecret # Change the value
+DJANGO_ALLOWED_HOSTS=.yourdomain.com # Enter your domain name with leading dot
