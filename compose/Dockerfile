@@ -23,9 +23,9 @@ COPY . .
 # RUN poetry export --format requirements.txt --output requirements.txt --extras psycopg2 --without-hashes
 
 # Export without dev dependencies for staging and production builds
-RUN sh -c 'if [ "$MODE" = 'staging' ] || [ "$MODE" = 'production' ]; then poetry export --format requirements.txt --output requirements.txt --extras psycopg2 --without-hashes; fi'
+RUN sh -c 'if [ "$MODE" = 'staging' ] || [ "$MODE" = 'production' ]; then poetry export --format requirements.txt --output requirements.txt --without dev --extras psycopg2 --without-hashes; fi'
 # Export with dev dependencies for development builds
-RUN sh -c 'if [ "$MODE" = 'dev' ]; then poetry export --format requirements.txt --output requirements.txt --dev --extras psycopg2 --without-hashes; fi'
+RUN sh -c 'if [ "$MODE" = 'dev' ]; then poetry export --format requirements.txt --output requirements.txt --with dev --extras psycopg2 --without-hashes; fi'
 
 # Create wheels
 RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
