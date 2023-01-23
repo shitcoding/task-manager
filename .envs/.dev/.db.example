@@ -1,0 +1,8 @@
+# Development environment database settings
+# ------------------------------------------------------------------------------
+# PostgreSQL credentials
+POSTGRES_DB=task_manager_db # Change the value
+POSTGRES_USER=task_manager_user # Change the value
+POSTGRES_PASSWORD=task_manager_password # Change the value
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
