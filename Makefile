@@ -4,36 +4,56 @@ help:  ## Display this help
 	  | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[0;32m%-30s\033[0m %s\n", $$1, $$2}'
 
 # Environment commands
-.env:  ## Creates an .env file from boilerplate .env.example file
-	@test ! -f .env && cp .env.example .env
+# ------------------------------------------------------------------------------
+env-dev:  ## Create template .env files for dev environment (if files don't exist already)
+	@test ! -f ./envs/.dev/.db && cp ./envs/.dev/.db.example ./envs/.dev/.db
+	@test ! -f ./envs/.dev/.django && cp ./envs/.dev/.django.example ./envs/.dev/.django
 
-secretkey:  ## Outputs a secure secret key (i.e., for SECRET_KEY env variable)
+env-staging:  ## Create template .env files for staging environment (if files don't exist already)
+	@test ! -f ./envs/.staging/.db && cp ./envs/.staging/.db.example ./envs/.staging/.db
+	@test ! -f ./envs/.staging/.django && cp ./envs/.staging/.django.example ./envs/.staging/.django
+	@test ! -f ./envs/.staging/.nginx-proxy-letsencrypt && \
+		cp ./envs/.staging/.nginx-proxy-letsencrypt.example ./envs/.staging/.nginx-proxy-letsencrypt
+
+env-production:  ## Create template .env files for production environment (if files don't exist already)
+	@test ! -f ./envs/.production/.db && cp ./envs/.production/.db.example ./envs/.production/.db
+	@test ! -f ./envs/.production/.django && cp ./envs/.production/.django.example ./envs/.production/.django
+	@test ! -f ./envs/.production/.nginx-proxy-letsencrypt && \
+		cp ./envs/.production/.nginx-proxy-letsencrypt.example ./envs/.production/.nginx-proxy-letsencrypt
+
+env-all: env-dev env-staging env-production  ## Create .env files for all environments: dev, staging, production (if files don't exist already)
+
+secretkey:  ## Output a secure secret key (i.e. for using as Django SECRET_KEY env variable)
 	@poetry run python3 -c 'from django.utils.crypto import get_random_string; print(get_random_string(40))'
 
-requirements.txt:  ## Refreshes dependencies in requirements.txt
+requirements:  ## Refresh app dependencies in requirements.txt
 	@poetry export --format requirements.txt --output requirements.txt --extras psycopg2 --without-hashes
 
-# Setup
-install: .env
-	@poetry install --extras psycopg2-binary
 
-migrate:  ## Run Django migrations when running app locally
+# App setup
+# ------------------------------------------------------------------------------
+migrate:  ## Run database migrations (when running app locally)
 	@poetry run python3 manage.py migrate
 
-migrate-docker:  ## Run Django migrations when running app in Docker
+migrate-docker:  ## Run database migrations (when running app in Docker)
 	python3 manage.py migrate
 
-wait-postgres:  ## Wait for postgres to start up
+wait-postgres:  # Wait for postgres to start up
 	python3 ./task_manager/utils/wait_for_postgres.py
+
+install: .env
+	@poetry install --extras psycopg2-binary
 
 setup: migrate
 	@echo Create a super user:
 	@poetry run python3 manage.py createsuperuser
 
-shell:
+shell:  ## Run Django REPL shell
 	@poetry run python3 manage.py shell
 
-# i18n translation commands
+
+# i18n localization/translation commands
+# ------------------------------------------------------------------------------
 transprepare:
 	@poetry run django-admin makemessages --ignore="static" --ignore=".venv" -a
 
@@ -46,21 +66,24 @@ transcompile:
 transcompile-docker:
 	django-admin compilemessages --ignore="static" --ignore=".venv"
 
-collectstatic:
+
+# Static files management
+# ------------------------------------------------------------------------------
+collectstatic:  # Run Django migrations (when running app locally) 
 	@poetry run python3 manage.py collectstatic --no-input
 
-collectstatic-docker:
+collectstatic-docker:  # Run Django migrations (when running app in Docker)
 	python3 manage.py collectstatic --no-input
 
 
 # Checks, tests, lint
-lint:
+lint:  ## Run flake8 code linter
 	@poetry run flake8 task_manager
 
 selfcheck:
 	@poetry check
 
-test:
+test:  ## Run tests
 	@export DJANGO_ALLOWED_HOSTS="*"; \
 	poetry run pytest --cov=task_manager --cov-report=xml
 
@@ -73,20 +96,17 @@ test-coverage-report-xml:
 
 check: lint selfcheck test requirements.txt
 
-# Deployment
-await-postgres:
-	@./entrypoint.sh
-
-run-dev: migrate transcompile ## Runs dev server
+# App deployment
+# ------------------------------------------------------------------------------
+run-dev: migrate transcompile  ## Run Django dev server (when running app locally)
 	@poetry run python3 manage.py runserver 0.0.0.0:8000
 
 run-dev-docker: \
 	wait-postgres \
 	migrate-docker \
 	transcompile-docker \
-	collectstatic-docker ## Runs dev server in docker
-	# python3 ./task_manager/utils/wait_for_postgres.py
-	# python3 manage.py migrate
+	collectstatic-docker  ## Run Django dev server (when running app in Docker)
+
 	python3 manage.py runserver 0.0.0.0:8000
 
 run-gunicorn-dev: migrate transcompile
@@ -96,22 +116,42 @@ run-gunicorn-docker: \
 	wait-postgres \
 	migrate-docker \
 	transcompile-docker \
-	collectstatic-docker ## Runs gunicorn in docker
+	collectstatic-docker  ## Run gunicorn wsgi server (when running app in Docker)
 
 	gunicorn task_manager.wsgi --bind 0.0.0.0:8000
 
-deploy-heroku:	## Deploys to Heroku via git
+deploy-heroku:	## Deploy the app to Heroku via git
 	git push heroku
 
+
 .PHONY: \
-	install \
+	help \
+	env-dev \
+	env-staging \
+	env-production \
+	env-all \
 	secretkey \
-	requirements.txt \
+	requirements \
 	migrate \
+	migrate-docker \
+	wait-postgres \
+	install \
 	setup \
 	shell \
+	transprepare \
+	transprepare-docker \
+	transcompile \
+	transcompile-docker \
+	collectstatic \
+	collectstatic-docker \
 	lint \
 	selfcheck \
 	test \
+	test-coverage-report \
+	test-coverage-report-xml \
 	check \
-	deploy
+	run-dev \
+	run-dev-docker \
+	run-gunicorn-dev \
+	run-gunicorn-docker \
+	deploy-heroku
