@@ -6,20 +6,20 @@ help:  ## Display this help
 # Environment commands
 # ------------------------------------------------------------------------------
 env-dev:  ## Create template .env files for dev environment (if files don't exist already)
-	@test ! -f ./envs/.dev/.db && cp ./envs/.dev/.db.example ./envs/.dev/.db
-	@test ! -f ./envs/.dev/.django && cp ./envs/.dev/.django.example ./envs/.dev/.django
+	@test ! -f ./.envs/.dev/.db && cp ./.envs/.dev/.db.example ./.envs/.dev/.db
+	@test ! -f ./.envs/.dev/.django && cp ./.envs/.dev/.django.example ./.envs/.dev/.django
 
 env-staging:  ## Create template .env files for staging environment (if files don't exist already)
-	@test ! -f ./envs/.staging/.db && cp ./envs/.staging/.db.example ./envs/.staging/.db
-	@test ! -f ./envs/.staging/.django && cp ./envs/.staging/.django.example ./envs/.staging/.django
-	@test ! -f ./envs/.staging/.nginx-proxy-letsencrypt && \
-		cp ./envs/.staging/.nginx-proxy-letsencrypt.example ./envs/.staging/.nginx-proxy-letsencrypt
+	@test ! -f ./.envs/.staging/.db && cp ./.envs/.staging/.db.example ./.envs/.staging/.db
+	@test ! -f ./.envs/.staging/.django && cp ./.envs/.staging/.django.example ./.envs/.staging/.django
+	@test ! -f ./.envs/.staging/.nginx-proxy-letsencrypt && \
+		cp ./.envs/.staging/.nginx-proxy-letsencrypt.example ./.envs/.staging/.nginx-proxy-letsencrypt
 
 env-production:  ## Create template .env files for production environment (if files don't exist already)
-	@test ! -f ./envs/.production/.db && cp ./envs/.production/.db.example ./envs/.production/.db
-	@test ! -f ./envs/.production/.django && cp ./envs/.production/.django.example ./envs/.production/.django
-	@test ! -f ./envs/.production/.nginx-proxy-letsencrypt && \
-		cp ./envs/.production/.nginx-proxy-letsencrypt.example ./envs/.production/.nginx-proxy-letsencrypt
+	@test ! -f ./.envs/.production/.db && cp ./.envs/.production/.db.example ./.envs/.production/.db
+	@test ! -f ./.envs/.production/.django && cp ./.envs/.production/.django.example ./.envs/.production/.django
+	@test ! -f ./.envs/.production/.nginx-proxy-letsencrypt && \
+		cp ./.envs/.production/.nginx-proxy-letsencrypt.example ./.envs/.production/.nginx-proxy-letsencrypt
 
 env-all: env-dev env-staging env-production  ## Create .env files for all environments: dev, staging, production (if files don't exist already)
 
