@@ -5,4 +5,4 @@
 DEFAULT_EMAIL=mail@yourdomain.com # Enter email to use for Letsencrypt CA
 VIRTUAL_HOST=yourdomain.com # Enter your domain name
 VIRTUAL_PORT=8000
-LETSENCRYPT_HOST=.yourdomain.com # Enter your domain name with leading dot
+LETSENCRYPT_HOST=yourdomain.com # Enter your domain name
