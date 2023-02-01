@@ -29,6 +29,12 @@ secretkey:  ## Output a secure secret key (i.e. for using as Django SECRET_KEY e
 requirements:  ## Refresh app dependencies in requirements.txt
 	@poetry export --format requirements.txt --output requirements.txt --extras psycopg2 --without-hashes
 
+reqs:
+	case "${MODE}" in \
+		"dev") poetry export --format requirements.txt --output requirements.txt --with dev --extras psycopg2 --without-hashes ;;\
+		"staging"|"production") poetry export --format requirements.txt --output requirements.txt --without dev --extras psycopg2 --without-hashes ;;\
+	esac
+
 
 # App setup
 # ------------------------------------------------------------------------------
