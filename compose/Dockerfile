@@ -14,7 +14,8 @@ RUN apk update && apk add \
   gcc \
   python3-dev \
   musl-dev \
-  curl
+  curl \
+  make
 
 # Install poetry and create requirements.txt
 RUN pip install --upgrade pip
@@ -22,10 +23,17 @@ RUN pip install poetry
 COPY . .
 # RUN poetry export --format requirements.txt --output requirements.txt --extras psycopg2 --without-hashes
 
-# Export without dev dependencies for staging and production builds
-RUN sh -c 'if [ "$MODE" = 'staging' ] || [ "$MODE" = 'production' ]; then poetry export --format requirements.txt --output requirements.txt --without dev --extras psycopg2 --without-hashes; fi'
-# Export with dev dependencies for development builds
-RUN sh -c 'if [ "$MODE" = 'dev' ]; then poetry export --format requirements.txt --output requirements.txt --with dev --extras psycopg2 --without-hashes; fi'
+# # Export with dev dependencies for development builds
+# RUN sh -c 'if [ "$MODE" = "dev" ]; then python3 -m poetry export --format requirements.txt --output requirements.txt --with dev --extras psycopg2 --without-hashes; fi'
+# # Export without dev dependencies for staging and production builds
+# RUN sh -c 'if [ "$MODE" = "staging" ] || [ "$MODE" = "production" ]; then python3 -m poetry export --format requirements.txt --output requirements.txt --without dev --extras psycopg2 --without-hashes; fi'
+
+# RUN sh -c 'case "$MODE" in \
+#   "dev") poetry export --format requirements.txt --output requirements.txt --with dev --extras psycopg2 --without-hashes ;;\
+#   "staging"|"production") poetry export --format requirements.txt --output requirements.txt --without dev --extras psycopg2 --without-hashes ;;\
+#   esac'
+
+RUN make reqs
 
 # Create wheels
 RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
