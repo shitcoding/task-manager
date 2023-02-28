@@ -1,0 +1,12 @@
+{% extends 'task_manager/base.html' %}
+
+{% load i18n %}
+
+{% block title %}{% translate "Server error" %}{% endblock %}
+
+{% block content %}
+<h1 class="my-4">{% translate "Server error" %}</h1>
+
+<p>{% translate "An error occurred on the server. Please try again later." %}</p>
+
+{% endblock %}

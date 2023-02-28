@@ -1,0 +1,12 @@
+{% extends 'task_manager/base.html' %}
+
+{% load i18n %}
+
+{% block title %}{% translate "Bad request" %}{% endblock %}
+
+{% block content %}
+<h1 class="my-4">{% translate "Bad request" %}</h1>
+
+<p>{% translate "The request could not be understood or was missing required parameters." %}</p>
+
+{% endblock %}
