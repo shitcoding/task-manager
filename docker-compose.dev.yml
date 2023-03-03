@@ -6,15 +6,6 @@ services:
       context: .
       dockerfile: ./compose/Dockerfile
     command: make run-dev-docker
-    environment:
-      - MODE=dev
-    #   - DEBUG=true
-    #   - SECRET_KEY=wow-so-secret
-    #   - PYTHONUNBUFFERED=1
-    #   - POSTGRES_DB=task_manager_db
-    #   - POSTGRES_USER=task_manager_user
-    #   - POSTGRES_PASSWORD=task_manager_password
-    #   - POSTGRES_HOST=postgres
     env_file:
       - ./.envs/.dev/.django
       - ./.envs/.dev/.db
@@ -30,10 +21,6 @@ services:
     image: postgres:13.0-alpine
     env_file:
       - ./.envs/.dev/.db
-    # environment:
-    #   - POSTGRES_DB=task_manager_db
-    #   - POSTGRES_USER=task_manager_user
-    #   - POSTGRES_PASSWORD=task_manager_password
     volumes:
       - postgres_volume:/var/lib/postgresql/data
     ports:
