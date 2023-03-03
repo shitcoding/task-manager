@@ -26,14 +26,19 @@ env-all: env-dev env-staging env-production  ## Create .env files for all enviro
 secretkey:  ## Output a secure secret key (i.e. for using as Django SECRET_KEY env variable)
 	@poetry run python3 -c 'from django.utils.crypto import get_random_string; print(get_random_string(40))'
 
-requirements:  ## Refresh app dependencies in requirements.txt
+requirements:  ## Export app dependencies to requirements.txt
 	@poetry export --format requirements.txt --output requirements.txt --extras psycopg2 --without-hashes
 
-reqs:
-	case "${MODE}" in \
-		"dev") poetry export --format requirements.txt --output requirements.txt --with dev --extras psycopg2 --without-hashes ;;\
-		"staging"|"production") poetry export --format requirements.txt --output requirements.txt --without dev --extras psycopg2 --without-hashes ;;\
-	esac
+reqs:  ## Export app dependencies for dev / staging, production environments
+ifeq (${MODE}, dev)
+	poetry export --dev --format requirements.txt --output requirements.txt --extras psycopg2 --without-hashes
+else ifeq (${MODE}, staging|production)
+	poetry export --format requirements.txt --output requirements.txt --extras psycopg2 --without-hashes --without-optional --without-dev
+else
+	@echo "Error: MODE not set properly. Please set MODE to 'dev', 'staging', or 'production'."
+	@exit 1
+endif
+
 
 
 # App setup
@@ -138,6 +143,7 @@ deploy-heroku:	## Deploy the app to Heroku via git
 	env-all \
 	secretkey \
 	requirements \
+	reqs \
 	migrate \
 	migrate-docker \
 	wait-postgres \
