@@ -8,6 +8,10 @@ WORKDIR /usr/src/app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
+# Set up build mode (dev, staging or production)
+ARG BUILD_MODE
+ENV MODE=${BUILD_MODE}
+
 # Install psycopg2 dependencies
 RUN apk update && apk add \
   postgresql-dev \
@@ -21,8 +25,11 @@ RUN apk update && apk add \
 RUN pip install --upgrade pip
 RUN pip install poetry
 COPY . .
-
+# Export dependencies to requirements.txt:
+# with dev dependencies if MODE=dev,
+# without dev dependencies if MODE=staging or production
 RUN make reqs
+
 
 # Create wheels
 RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt

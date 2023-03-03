@@ -29,11 +29,11 @@ secretkey:  ## Output a secure secret key (i.e. for using as Django SECRET_KEY e
 requirements:  ## Export app dependencies to requirements.txt
 	@poetry export --format requirements.txt --output requirements.txt --extras psycopg2 --without-hashes
 
-reqs:  ## Export app dependencies for dev / staging, production environments
+reqs:  ## Export app dependencies with dev dependencies for dev environment / without dev deps for staging or production env (used for building Docker containers)
 ifeq (${MODE}, dev)
-	poetry export --dev --format requirements.txt --output requirements.txt --extras psycopg2 --without-hashes
-else ifeq (${MODE}, staging|production)
-	poetry export --format requirements.txt --output requirements.txt --extras psycopg2 --without-hashes --without-optional --without-dev
+	poetry export --format requirements.txt --output requirements.txt --with dev --extras psycopg2 --without-hashes
+else ifeq ($(filter ${MODE},staging production),${MODE})
+	poetry export --format requirements.txt --output requirements.txt --extras psycopg2 --without-hashes --without dev --without optional
 else
 	@echo "Error: MODE not set properly. Please set MODE to 'dev', 'staging', or 'production'."
 	@exit 1
@@ -109,6 +109,15 @@ check: lint selfcheck test requirements.txt
 
 # App deployment
 # ------------------------------------------------------------------------------
+docker-up-dev:  ## Build and run docker container (development environment)
+	 docker compose -f docker-compose.dev.yml up -d --build
+
+docker-up-staging:  ## Build and run docker container (staging environment)
+	 docker compose -f docker-compose.staging.yml up -d --build
+
+docker-up-production:  ## Build and run docker container (production environment)
+	 docker compose -f docker-compose.production.yml up -d --build
+
 run-dev: migrate transcompile  ## Run Django dev server (when running app locally)
 	@poetry run python3 manage.py runserver 0.0.0.0:8000
 
