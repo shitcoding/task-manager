@@ -4,9 +4,6 @@
 ---
 # Task manager with Django backend
 
-> Demo:
-> https://shitcoding.cyou/
-
 Task manager app similar to [Redmine](http://redmine.org).
 
 Features:
@@ -52,6 +49,10 @@ make env-all
 ```
 
 3.2. Enter credentials to the newly created .env files.
+
+> **IMPORTANT!** Change the credentials in the created `.env` files!
+> If you don't do it, your website will be totally insecure and/or won't work at all.
+
 For example, for production environment:
 ```sh
 # ./envs/.production/.django
@@ -92,6 +93,7 @@ VIRTUAL_HOST=yourdomain.com # Enter your domain name
 VIRTUAL_PORT=8000
 LETSENCRYPT_HOST=yourdomain.com # Enter your domain name
 ```
+
 
 
 4. Run `docker-compose` for the environment you need (development, staging or production) to start the app containter and other required services (postgres, nginx, etc.)
