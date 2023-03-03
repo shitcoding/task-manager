@@ -5,6 +5,8 @@ services:
     build:
       context: .
       dockerfile: ./compose/Dockerfile
+      args:
+        BUILD_MODE: production
     command: make run-gunicorn-docker
     env_file:
       - ./.envs/.production/.django
