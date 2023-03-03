@@ -5,3 +5,9 @@ MODE=staging
 DJANGO_DEBUG=0
 DJANGO_SECRET_KEY=WowSoSecret # Change the value
 DJANGO_ALLOWED_HOSTS=.yourdomain.com # Enter your domain name with leading dot
+
+# letsencrypt-nginx-proxy-companion settings
+# https://github.com/jwilder/docker-letsencrypt-nginx-proxy-companion
+VIRTUAL_HOST=yourdomain.com
+VIRTUAL_PORT=8000
+LETSENCRYPT_HOST=yourdomain.com
