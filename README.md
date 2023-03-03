@@ -4,9 +4,6 @@
 ---
 # Task manager with Django backend
 
-> Demo:
-> https://shitcoding.cyou/
-
 Task manager app similar to [Redmine](http://redmine.org).
 
 Features:
@@ -52,6 +49,10 @@ make env-all
 ```
 
 3.2. Enter credentials to the newly created .env files.
+
+> **IMPORTANT!** Change the credentials in the created `.env` files!
+> If you don't do it, your website will be totally insecure and/or won't work at all.
+
 For example, for production environment:
 ```sh
 # ./envs/.production/.django
@@ -94,22 +95,29 @@ LETSENCRYPT_HOST=yourdomain.com # Enter your domain name
 ```
 
 
+
 4. Run `docker-compose` for the environment you need (development, staging or production) to start the app containter and other required services (postgres, nginx, etc.)
 
-#### To run the development environment:
+#### To run the Docker container with development environment:
 ```sh
+make docker-up-dev
+# Or:
 docker-compose -f docker-compose.dev.yml up -d --build
 ```
 This will start the application containter in development mode on http://127.0.0.1:8000/ together with postgres database containter.
 
-#### To run the staging environment:
+#### To run the Docker container with staging environment:
 ```sh
+make docker-up-staging
+# Or:
 docker-compose -f docker-compose.staging.yml up -d --build
 ```
 
-#### To run the production environment:
+#### To run the Docker container with production environment:
 ```sh
-docker-compose -f docker-compose.staging.yml up -d --build
+make docker-up-production
+# Or:
+docker-compose -f docker-compose.production.yml up -d --build
 ```
 
 In case of staging and production environments, we start Django app containter, Postgres database, [`nginx-proxy`](https://github.com/nginx-proxy/nginx-proxy) and [`letsencrypt-nginx-proxy-companion`](https://github.com/nginx-proxy/docker-letsencrypt-nginx-proxy-companion) containers.
