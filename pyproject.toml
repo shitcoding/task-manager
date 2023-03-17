@@ -36,6 +36,7 @@ factory-boy = "^3.2.1"
 wemake-python-styleguide = "^0.16.1"
 pytest-cov = "^3.0.0"
 ipython = "^8.5.0"
+django-override-autonow = "^0.0.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
