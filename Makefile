@@ -62,6 +62,9 @@ setup: migrate
 shell:  ## Run Django REPL shell
 	@poetry run python3 manage.py shell
 
+shell-docker:  ## Run Django REPL shell (when running app in Docker)
+	@python3 manage.py shell
+
 
 # i18n localization/translation commands
 # ------------------------------------------------------------------------------
