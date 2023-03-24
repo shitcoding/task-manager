@@ -11,7 +11,9 @@ services:
     env_file:
       - ./.envs/.dev/.django
       - ./.envs/.dev/.db
+    restart: unless-stopped
     volumes:
+      - .:/home/app/web:delegated # enable hot code reload in debug mode
       - static_volume:/home/app/web/staticfiles
       - media_volume:/home/app/web/mediafiles
     ports:
