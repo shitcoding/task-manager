@@ -23,6 +23,7 @@ class OverrideAutoNowAddMixin:
 class SiteUserFactory(OverrideAutoNowAddMixin, DjangoModelFactory):
     class Meta:
         model = SiteUser
+        django_get_or_create = ("username",)
 
     username = factory.Faker("user_name")
     first_name = factory.Faker("first_name")
@@ -33,6 +34,7 @@ class SiteUserFactory(OverrideAutoNowAddMixin, DjangoModelFactory):
 class LabelFactory(OverrideAutoNowAddMixin, DjangoModelFactory):
     class Meta:
         model = Label
+        django_get_or_create = ("name",)
 
     name = factory.Faker("text", max_nb_chars=20)
     created_on = factory.Faker("date_time_this_year", tzinfo=timezone.utc)
@@ -41,6 +43,7 @@ class LabelFactory(OverrideAutoNowAddMixin, DjangoModelFactory):
 class StatusFactory(OverrideAutoNowAddMixin, DjangoModelFactory):
     class Meta:
         model = Status
+        django_get_or_create = ("name",)
 
     name = factory.Faker("text", max_nb_chars=20)
     created_on = factory.Faker("date_time_this_year", tzinfo=timezone.utc)
