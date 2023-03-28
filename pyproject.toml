@@ -18,6 +18,8 @@ django-crispy-forms = "^1.14.0"
 crispy-bootstrap5 = "^0.7"
 whitenoise = "^6.2.0"
 django-environ = "^0.9.0"
+factory-boy = "^3.2.1"
+django-override-autonow = "^0.0.1"
 
 [tool.poetry.extras]
 psycopg2 = ["psycopg2"]
@@ -32,11 +34,9 @@ freezegun = "^1.2.2"
 coverage = "^6.5.0"
 pytest-sugar = "^0.9.6"
 django-debug-toolbar = "^3.8.1"
-factory-boy = "^3.2.1"
 wemake-python-styleguide = "^0.16.1"
 pytest-cov = "^3.0.0"
 ipython = "^8.5.0"
-django-override-autonow = "^0.0.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
