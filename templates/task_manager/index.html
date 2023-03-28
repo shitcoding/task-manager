@@ -7,5 +7,36 @@
 {% block content %}
 <h1>{% translate "Task manager demo" %}</h1>
 <p class="lead">{% translate "This is a live demo of task manager with Django backend and Bootstrap front-end." %}</p>
-<a class="btn btn-lg btn-primary" href="https://github.com/shitcoding/python-project-lvl4" target="_blank" role="button">{% translate "View source code &raquo;" %}</a>
+
+<hr>
+
+<h3>{% translate "Features:" %}</h3>
+<ul>
+  <li>{% translate "User signup, authentication, authorization" %}</li>
+  <li>{% translate "Creation of tasks, task statuses, labels, assigning performers" %}</li>
+  <li>{% translate "i18n localization/internationalization" %}</li>
+</ul>
+
+<hr>
+
+<h3>{% translate "Tech stack:" %}</h3>
+<ul>
+  <li>{% translate "Backend: Django, gunicorn, Postgres" %}</li>
+  <li>{% translate "Frontend: Bootstrap + " %}<code>django-crispy-forms</code>{% translate " + a bit of custom CSS" %}</li>
+  <li>{% translate "Deployment:" %}</li>
+  <ul>
+    <li>{% translate "Dockerized, with separate " %}<code>docker-compose</code>{% translate " files for running in dev, staging, production environments" %}</li>
+    <li>{% translate "Procfile for deploying to Heroku" %}</li>
+    <li>{% translate "Static files served with nginx acting like a reverse proxy with " %}<a href="https://github.com/nginx-proxy/nginx-proxy" target="_blank">nginx-proxy</a>{% translate " and " %}<a href="https://github.com/nginx-proxy/docker-letsencrypt-nginx-proxy-companion" target="_blank">letsencrypt-nginx-proxy-companion</a>{% translate " used to issue and renew SSL certificates" %}</li>
+  </ul>
+  <li>{% translate "Tests, CI/CD:" %}</li>
+  <ul>
+    <li>{% translate "pytest" %}</li>
+    <li>{% translate "Github Actions" %}</li>
+  </ul>
+</ul>
+
+<hr>
+
+<a class="btn btn-lg btn-primary" href="https://github.com/shitcoding/python-project-lvl4" target="_blank" role="button">{% translate "View readme / source code &raquo;" %}</a>
 {% endblock %}
