@@ -129,6 +129,17 @@ The difference between staging and production environments is using either [Let'
   - 50 certificates may be created per domain per week
 
 
+#### Generating dummy content for task manager
+
+To generate dummy content (tasks, users, labels, statuses) automatically, use custom Django management command:
+```sh
+# Generate 10 dummy tasks along with creator/performer users, task labels, statuses
+python3 manage.py create_dummy_content
+# Or use --num-tasks argument to generate the specific amount of tasks
+python3 manage.py create_dummy_content --num-tasks=1337
+```
+
+
 ---
 ## Tests and code quality
 App uses the following tools:
