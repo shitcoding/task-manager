@@ -26,7 +26,7 @@ def create_user(db, django_user_model, test_password, faker):
     def make_user(**kwargs):
         kwargs["password"] = test_password
         if "username" not in kwargs:
-            kwargs["username"] = faker.uuid4()
+            kwargs["username"] = faker.user_name()
         return django_user_model.objects.create_user(**kwargs)
 
     return make_user
