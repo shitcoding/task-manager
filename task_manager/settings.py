@@ -11,17 +11,17 @@ env = environ.Env()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Logging setup
-logging.basicConfig(
-    level=logging.DEBUG,
-    filename=BASE_DIR / "logs.events.log",
-    filemode="w",
-    format="{asctime} - {levelname} - {message}",
-    datefmt="%H:%M:%S",
-    style="{",
-)
-# Mute debug logging for faker library used in tests
-logging.getLogger("faker").setLevel(logging.ERROR)
+# # Logging setup
+# logging.basicConfig(
+#     level=logging.DEBUG,
+#     filename=BASE_DIR / "logs.events.log",
+#     filemode="w",
+#     format="{asctime} - {levelname} - {message}",
+#     datefmt="%H:%M:%S",
+#     style="{",
+# )
+# # Mute debug logging for faker library used in tests
+# logging.getLogger("faker").setLevel(logging.ERROR)
 
 
 DEBUG = env.bool("DJANGO_DEBUG", default=False)
