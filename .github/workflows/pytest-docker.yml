@@ -1,0 +1,19 @@
+  name: Test dockerized app with pytest
+
+  on:
+    - push
+    - pull_request
+
+  jobs:
+    test:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+  
+        - name: Run pytest
+          uses: cloudposse/github-action-docker-compose-test-run@main
+          with:
+            file: docker-compose.test.yml
+            service: app
+            command: ./task_manager/tests/run-tests.sh
