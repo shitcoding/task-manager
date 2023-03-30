@@ -1,4 +1,4 @@
-[![Python CI](https://github.com/shitcoding/python-project-lvl4/actions/workflows/CI.yml/badge.svg)](https://github.com/shitcoding/python-project-lvl4/actions/workflows/CI.yml)
+[![Pytest & Flake8](https://github.com/shitcoding/task-manager/actions/workflows/pytest-docker.yml/badge.svg)](https://github.com/shitcoding/task-manager/actions/workflows/pytest-docker.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/49e3fce0533f78da6b43/maintainability)](https://codeclimate.com/github/shitcoding/python-project-lvl4/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/49e3fce0533f78da6b43/test_coverage)](https://codeclimate.com/github/shitcoding/python-project-lvl4/test_coverage)
 ---

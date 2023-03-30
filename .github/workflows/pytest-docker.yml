@@ -1,4 +1,4 @@
-  name: Test dockerized app with pytest
+  name: Pytest & Flake8 checks
 
   on:
     - push
