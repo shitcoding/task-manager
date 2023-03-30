@@ -94,12 +94,18 @@ collectstatic-docker:  # Run Django migrations (when running app in Docker)
 lint:  ## Run flake8 code linter
 	@poetry run flake8 task_manager
 
+lint-docker:  ## Run flake8 code linter (for use in Docker and CI)
+	@python3 -m flake8 task_manager
+
 selfcheck:
 	@poetry check
 
 test:  ## Run tests
 	@export DJANGO_ALLOWED_HOSTS="*"; \
 	poetry run pytest --cov=task_manager --cov-report=xml
+
+test-docker:  ## Run tests (for use in Docker and CI)
+	python3 -m pytest
 
 test-coverage-report: test
 	@poetry run coverage report -m $(ARGS)
@@ -109,6 +115,8 @@ test-coverage-report-xml:
 	@poetry run coverage xml
 
 check: lint selfcheck test requirements.txt
+
+check-docker: lint-docker test-docker
 
 # App deployment
 # ------------------------------------------------------------------------------
